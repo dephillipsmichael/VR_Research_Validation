@@ -9,7 +9,6 @@ public class FishBehavior : MonoBehaviour {
     Transform PathParent;
 
     Vector3 desiredPos;
-    Quaternion desiredRot;
 
     int currNode = 0;
 
@@ -18,23 +17,21 @@ public class FishBehavior : MonoBehaviour {
     }
 
     void Update() {
-
-        //interpolate to position of current node
+        // Interpolate to position of current node
         transform.position = Vector3.Lerp(transform.position, desiredPos, Time.deltaTime * SPEED);
-        transform.rotation = Quaternion.Lerp(transform.rotation, desiredRot, Time.deltaTime * SPEED);
-
-        //get screen facing vector and flip texture accordingly to give illusion they are swiming in direction of movement
-        AlignToDirection();
 
         //if close to current node, move to next one
         if (Vector3.Distance(transform.position, desiredPos) < DISTANCE_CHECK) {
-            SetNextPosition();
+            SetNextPosition();            
         }
+
+        transform.LookAt(desiredPos);
+        // The fish model has a 90 degree offset
+        transform.rotation *= Quaternion.AngleAxis(90, transform.up);
     }
 
     void SetDesiredNode() {
         desiredPos = PathParent.GetChild(currNode).position;
-        desiredRot = PathParent.GetChild(currNode).rotation;
     }
 
     void SetNextPosition() {
@@ -46,13 +43,5 @@ public class FishBehavior : MonoBehaviour {
         }
 
         SetDesiredNode();
-    }
-
-    void AlignToDirection() {
-        Vector3 currScreenPoint = Camera.main.WorldToScreenPoint(transform.position);
-        Vector3 desiredScreenPoint = Camera.main.WorldToScreenPoint(desiredPos);
-        Vector3 movementDirection = desiredScreenPoint - currScreenPoint;
-        Vector3 flip = Vector3.zero;
-        flip.x = movementDirection.x > 0 ? 1 : 0;
     }
 }

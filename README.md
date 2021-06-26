@@ -6,7 +6,7 @@ To get the project to open, you need to download 2 local dependencies to your ma
 2) https://vr.tobii.com/sdk/downloads/
 
 Then, place them at the as siblings in the directory where you cloned this repo, looking like this:
-![Screenshot (7)](https://user-images.githubusercontent.com/5590748/123523496-cbe2f380-d678-11eb-80d8-dc1e091b4ab9.png)
+![ProjectSetup](https://user-images.githubusercontent.com/5590748/123523524-f2a12a00-d678-11eb-86e6-f5e574de60ea.png)
 
 Add the project into Unity, and once it loads, drag the **Underwater_FX** scene into your main scene. Then enable it in build settings as the scene to run.
 

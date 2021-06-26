@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "com.tobii.xr.sdk": {
-      "version": "file:C:/Users/mike/Downloads/TobiiXRSDK_3.0.0.178",
+      "version": "file:../../TobiiXRSDK_3.0.0.178",
       "depth": 0,
       "source": "local",
       "dependencies": {
@@ -133,7 +133,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.xr.picoxr": {
-      "version": "file:C:/Users/mike/Downloads/PicoXR_Platform_SDK-1.2.2_B45 (1)",
+      "version": "file:../../PicoXR_Platform_SDK-1.2.2_B45",
       "depth": 0,
       "source": "local",
       "dependencies": {

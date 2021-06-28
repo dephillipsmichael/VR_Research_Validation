@@ -2,7 +2,7 @@
 
 public class FishBehavior : MonoBehaviour {
 
-    const float SPEED = 1f;
+    const float SPEED = 0.5f;
     const float DISTANCE_CHECK = 2f;
 
     [SerializeField]

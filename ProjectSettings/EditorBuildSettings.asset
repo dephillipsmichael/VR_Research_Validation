@@ -5,15 +5,9 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/Samples/Tobii XR SDK/3.0.0/UI/Example_UI_TriggerMenu.unity
-    guid: e858db18a83d41142ae89d0014f9d4e8
   - enabled: 1
     path: Assets/Underwater_FX/Underwater_FX.unity
     guid: 2de00dbfef043754dab36eedb0b705f3
-  - enabled: 0
-    path: Assets/Underwater life deluxe/Scenes/Overview.unity
-    guid: 2248145b478485746b33547973c31c84
   m_configObjects:
     Unity.XR.PXR.Settings: {fileID: 11400000, guid: a386d87dbfb0e294092bee40db2a099a, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 660a2bf9665b9db4a8720222b5c67592, type: 2}

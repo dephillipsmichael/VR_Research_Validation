@@ -2,9 +2,9 @@
 using System;
 using System.Collections.Generic;
 
-public class FishBehavior : MonoBehaviour {
+public class SharkBehavior : MonoBehaviour {
 
-    const float SPEED = 0.75f;
+    const float SPEED = 0.5f;
     const float DISTANCE_CHECK = 2f;
 
     [SerializeField]
@@ -16,13 +16,9 @@ public class FishBehavior : MonoBehaviour {
 
     List<SimpleFishPath> availablePathList = new List<SimpleFishPath>();
     
-    public GameObject troutPrefab;
-    List<Fish> troutFishList = new List<Fish>();
-    List<GameObject> troutObjList = new List<GameObject>();
-
-    public GameObject salmonPrefab;
-    List<Fish> salmonFishList = new List<Fish>();
-    List<GameObject> salmonObjList = new List<GameObject>();
+    public GameObject sharkPrefab;
+    List<Fish> sharkFishList = new List<Fish>();
+    List<GameObject> sharkObjList = new List<GameObject>();
 
     float startTime = 0.0f;
     float durationInSeconds = 20.0f;// 20 seconds * 60.0f; // 4 minutes
@@ -33,8 +29,7 @@ public class FishBehavior : MonoBehaviour {
         random = new System.Random();
         startTime = Time.time;
         CreateAvailableFishPaths();
-        CreateSalmon();
-        CreateTrout();
+        CreateSharks();
     }
 
     void CreateAvailableFishPaths()
@@ -98,21 +93,10 @@ public class FishBehavior : MonoBehaviour {
     void Update() {
 
         float timeOffset = Time.time - startTime;
-        for (int i = 0; i < troutFishList.Count; i++)
+        for (int i = 0; i < sharkFishList.Count; i++)
         {
-            Fish fish = troutFishList[i];
-            GameObject fishObj = troutObjList[i];
-
-            if (timeOffset > fish.spawnTime)
-            {
-                UpdateFish(fish, fishObj);
-            }
-        }
-
-        for (int i = 0; i < salmonFishList.Count; i++)
-        {
-            Fish fish = salmonFishList[i];
-            GameObject fishObj = salmonObjList[i];
+            Fish fish = sharkFishList[i];
+            GameObject fishObj = sharkObjList[i];
 
             if (timeOffset > fish.spawnTime)
             {
@@ -143,8 +127,6 @@ public class FishBehavior : MonoBehaviour {
             }
 
             fishObj.transform.LookAt(desiredPos);
-            // The fish model has a 90 degree offset
-            fishObj.transform.rotation *= Quaternion.AngleAxis(90, transform.up);
 
             if (!fish.hasFood)
             {
@@ -158,36 +140,20 @@ public class FishBehavior : MonoBehaviour {
             }
         }
     }
-
-    void CreateSalmon()
-    {
-        Debug.Log("CreateSalmon");
-        salmonFishList.Clear();
-        for (float t = 2.0f; t < durationInSeconds; t += 2.0f)
-        {    
-            Fish fish = new Fish(t, randomPath());
-            Vector3 startingPos = fish.path.path[0];
-            salmonFishList.Add(fish);
-            GameObject fishObj = Instantiate(salmonPrefab, startingPos, new Quaternion(0, 0, 0, 0));
-            fishObj.SetActive(false);
-            fishObj.transform.Find("Flake").gameObject.SetActive(false);
-            salmonObjList.Add(fishObj);
-        }
-    }
     
-    void CreateTrout()
+    void CreateSharks()
     {
-        Debug.Log("CreateTrout");
-        troutFishList.Clear();
-        for (float t = 3.0f; t < durationInSeconds; t += 2.0f)
+        Debug.Log("CreateShark");
+        sharkFishList.Clear();
+        for (float t = 10.0f; t < durationInSeconds; t += durationInSeconds)
         {
             Fish fish = new Fish(t, randomPath());
-            troutFishList.Add(fish);
+            sharkFishList.Add(fish);
             Vector3 startingPos = fish.path.path[0];
-            GameObject fishObj = Instantiate(troutPrefab, startingPos, new Quaternion(0, 0, 0, 0));
+            GameObject fishObj = Instantiate(sharkPrefab, startingPos, new Quaternion(0, 0, 0, 0));
             fishObj.SetActive(false);
             fishObj.transform.Find("Flake").gameObject.SetActive(false);
-            troutObjList.Add(fishObj);
+            sharkObjList.Add(fishObj);
         }
     }
 

@@ -185,7 +185,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4329573320410458}
   - component: {fileID: 95345643839182388}
-  - component: {fileID: 1703332104}
   m_Layer: 0
   m_Name: Great_white_shark_prefab
   m_TagString: Untagged
@@ -202,7 +201,7 @@ Transform:
   m_GameObject: {fileID: 1276205554959560}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.48, y: 0.22, z: 0.21}
+  m_LocalScale: {x: 0.48, y: 0.34, z: 0.3}
   m_Children:
   - {fileID: 4400193429854554}
   - {fileID: 4785457274110892}
@@ -229,20 +228,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &1703332104
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1276205554959560}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19bd7e5520fd96a45b4ffde91019dcda, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fishFood: {fileID: 0}
-  sharkPrefab: {fileID: 1276205554959560}
 --- !u!1 &1292320182572262
 GameObject:
   m_ObjectHideFlags: 0

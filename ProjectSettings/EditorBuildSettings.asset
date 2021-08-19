@@ -6,8 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Underwater_FX/Underwater_FX.unity
-    guid: 2de00dbfef043754dab36eedb0b705f3
-  m_configObjects:
-    Unity.XR.PXR.Settings: {fileID: 11400000, guid: a386d87dbfb0e294092bee40db2a099a, type: 2}
-    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 660a2bf9665b9db4a8720222b5c67592, type: 2}
+    path: Assets/Scenes/Fishies.unity
+    guid: 906c9956d7f4d5548a252a36a6214f30
+  - enabled: 0
+    path: Assets/PicoMobileSDK/Pvr_UnitySDK/Scenes/Examples/EyeTracking.unity
+    guid: 741e62247a5c6f2439d13cea14bbca34
+  m_configObjects: {}

@@ -1,37 +1,45 @@
-﻿// Copyright © 2018 – Property of Tobii AB (publ) - All Rights Reserved
+﻿// Copyright  2015-2020 Pico Technology Co., Ltd. All Rights Reserved.
 
-using Tobii.G2OM;
 using UnityEngine;
 
-namespace Tobii.XR.Examples.DevTools
+public class ScaleAtGaze : MonoBehaviour
 {
-    //Monobehaviour which implements the "IGazeFocusable" interface, meaning it will be called on when the object receives focus
-    public class ScaleAtGaze : MonoBehaviour, IGazeFocusable
-    {
-        public float scaleIncreaseOnGaze = 0.1f;
-        private Vector3 originalScale;
+    public float scaleIncrease = 1.5f;
+    private Vector3 ogScale;
+    public float AnimationTime = 0.1f;
 
-        //The method of the "IGazeFocusable" interface, which will be called when this object receives or loses focus
-        public void GazeFocusChanged(bool hasFocus)
+    private Pvr_UnitySDKAPI.EyeTrackingGazeRay gazeRay;
+
+    private void Start()
+    {
+        ogScale = transform.localScale;
+    }
+
+    private void Update()
+    {
+        if (Application.isEditor)
         {
-            //If this object received focus, fade the object's color to highlight color
-            if (hasFocus)
-            {
-                transform.localScale = new Vector3(
-                    originalScale.x + scaleIncreaseOnGaze,
-                    originalScale.y + scaleIncreaseOnGaze,
-                    originalScale.z + scaleIncreaseOnGaze);
-            }
-            //If this object lost focus, fade the object's color to it's original color
-            else
-            {
-                transform.localScale = originalScale;
-            }
+            return;
         }
 
-        private void Start()
+        Pvr_UnitySDKAPI.System.UPvr_getEyeTrackingGazeRay(ref gazeRay);
+        Ray ray = new Ray(gazeRay.Origin, gazeRay.Direction);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit))
         {
-            originalScale = transform.localScale;
+            if (hit.transform.name == transform.name)
+            {
+                transform.localScale = ogScale * scaleIncrease;
+            }
+            else
+            {
+                transform.localScale = ogScale;
+            }               
+
+        }
+        else
+        {
+            transform.localScale = ogScale;
         }
     }
 }

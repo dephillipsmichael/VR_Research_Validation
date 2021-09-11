@@ -53,6 +53,7 @@ public class FishBehavior : Singleton<FishBehavior> {
         CreateSalmon();
         CreateTrout();
         CreateShark();
+        FlakeManager.Instance.startFishin();
     }
 
     void CreateAvailableFishPaths()

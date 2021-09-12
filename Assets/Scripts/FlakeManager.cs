@@ -9,13 +9,13 @@ public class FlakeManager : Singleton<FlakeManager> {
     const string SHARK_NAME = "Shark";
 
     [SerializeField]
-    GameObject flakePile0;
+    public GameObject flakePile0;
     [SerializeField]
-    GameObject flakePile1;
+    public GameObject flakePile1;
     [SerializeField]
-    GameObject flakePile2;
+    public GameObject flakePile2;
 
-    List<GameObject> flakeGameObjList = new List<GameObject>();
+    public List<GameObject> flakeGameObjList = new List<GameObject>();
     List<Flake> flakeList = new List<Flake>();
 
     [SerializeField]
@@ -74,7 +74,17 @@ public class FlakeManager : Singleton<FlakeManager> {
         }
 
         GameObject pile = GetFlakePile(flake.pileIndex);
-        float sideSway = (Mathf.Sin(Time.time + flake.speedstartingSinAngle) * flake.sidesway);
+        SpriteRenderer sr = flakeObj.GetComponent<SpriteRenderer>();
+
+        float yVal = flakeObj.transform.position.y;
+        Color color = Color.white;
+        if (yVal > 4.5f)
+        {
+            color.a = ((7f - yVal) / 2.5f);
+        }
+        sr.color = color;
+
+        float sideSway = (Mathf.Sin(((2 * flake.sidesway * Time.time) + flake.speedstartingSinAngle)) * flake.sidesway);
         float changeInY = Time.deltaTime * SPEED;
         flakeObj.transform.position = new Vector3(pile.transform.position.x + sideSway, flakeObj.transform.position.y - changeInY, flakeObj.transform.position.z);
     }

@@ -4,8 +4,9 @@ using System.Collections.Generic;
 
 public class FishBehavior : Singleton<FishBehavior> {
 
+    const float SWIM_SPEED = 1.25f;
     const float SPEED = 0.75f;
-    const float DISTANCE_CHECK = 2f;
+    const float DISTANCE_CHECK = 1f;
 
     const string SHARK_NAME = "Shark";
     const string FISH1_NAME = "BlueFish";
@@ -14,8 +15,8 @@ public class FishBehavior : Singleton<FishBehavior> {
     [SerializeField]
     GameObject fishFood;
 
-    Vector3 behindRightRock = new Vector3(-10.9599991f, -1.73000002f, 13.1630001f);    
-    Vector3 behindLeftRock = new Vector3(14.8900003f, -0.800000012f, 12.2980003f);
+    Vector3 behindLeftRock = new Vector3(-7.9599991f, -1.73000002f, 13.1630001f);    
+    Vector3 behindRightRock = new Vector3(12.8900003f, -0.800000012f, 12.2980003f);
     Vector2 behindRockYRange = new Vector2(-3.0f, 0.0f);
 
     List<SimpleFishPath> availablePathList = new List<SimpleFishPath>();
@@ -34,7 +35,8 @@ public class FishBehavior : Singleton<FishBehavior> {
     Fish sharkFishObj;
     float sharkTime = 15.0f;
 
-    float startTime = 0.0f;    
+    float startTime = 0.0f;
+    float startOffset = 0.0f;
     float durationInSeconds = 20.0f;// 20 seconds * 60.0f; // 4 minutes
 
     bool isDoneFishing = false;
@@ -65,43 +67,71 @@ public class FishBehavior : Singleton<FishBehavior> {
 
         Debug.Log("CreateAvailableFishPaths");
 
+        float yVal = -1;
         float scale = 1.25f;
 
-        Vector3 topLeft = fishFood.transform.position;
-        topLeft.y += scale;
-        topLeft.x += scale;
+        Vector3 top0 = FlakeManager.Instance.flakePile0.transform.position;
+        top0.y = yVal;
+        top0.y += scale;
 
-        Vector3 topRight = fishFood.transform.position;
-        topRight.y += scale;
-        topRight.x -= scale;
+        Vector3 bottom0 = FlakeManager.Instance.flakePile0.transform.position;
+        bottom0.y = yVal;
+        bottom0.y -= scale;
 
-        Vector3 bottomLeft = fishFood.transform.position;
-        bottomLeft.y -= scale;
-        bottomLeft.x -= scale;
+        Vector3 top1 = FlakeManager.Instance.flakePile1.transform.position;
+        top1.y = yVal;
+        top1.y += scale;
 
-        Vector3 bottomRight = fishFood.transform.position;
-        bottomRight.y -= scale;
-        bottomRight.x -= scale;
+        Vector3 bottom1 = FlakeManager.Instance.flakePile1.transform.position;
+        bottom1.y = yVal;
+        bottom1.y -= scale;
+
+        Vector3 top2 = FlakeManager.Instance.flakePile2.transform.position;
+        top2.y = yVal;
+        top2.y += scale;
+
+
+        Vector3 bottom2 = FlakeManager.Instance.flakePile2.transform.position;
+        bottom2.y = yVal;
+        bottom2.y -= scale;
 
 
         availablePathList.Clear();
         availablePathList.Add(new SimpleFishPath(new List<Vector3>() {
-            behindLeftRock, bottomLeft, bottomRight, behindRightRock }));
+            behindLeftRock, top0, top1, top2, behindRightRock }));
         availablePathList.Add(new SimpleFishPath(new List<Vector3>() {
-            behindLeftRock, bottomLeft, topRight, behindRightRock }));
+            behindLeftRock, top0, top1, bottom2, behindRightRock }));
         availablePathList.Add(new SimpleFishPath(new List<Vector3>() {
-            behindLeftRock, topLeft, bottomRight, behindRightRock }));
+            behindLeftRock, top0, bottom1, top2, behindRightRock }));
         availablePathList.Add(new SimpleFishPath(new List<Vector3>() {
-            behindLeftRock, topLeft, topRight, behindRightRock }));
+            behindLeftRock, top0, bottom1, bottom2, behindRightRock }));
+        
+        availablePathList.Add(new SimpleFishPath(new List<Vector3>() {
+            behindLeftRock, bottom0, top1, top2, behindRightRock }));
+        availablePathList.Add(new SimpleFishPath(new List<Vector3>() {
+            behindLeftRock, bottom0, top1, bottom2, behindRightRock }));
+        availablePathList.Add(new SimpleFishPath(new List<Vector3>() {
+            behindLeftRock, bottom0, bottom1, top2, behindRightRock }));
+        availablePathList.Add(new SimpleFishPath(new List<Vector3>() {
+            behindLeftRock, bottom0, bottom1, bottom2, behindRightRock }));
 
         availablePathList.Add(new SimpleFishPath(new List<Vector3>() {
-            behindRightRock, bottomRight, bottomLeft, behindLeftRock }));
+            behindRightRock, top2, top1, top0, behindLeftRock }));
         availablePathList.Add(new SimpleFishPath(new List<Vector3>() {
-            behindRightRock, topRight, bottomLeft, behindLeftRock }));
+            behindRightRock, top2, top1, bottom0, behindLeftRock }));
         availablePathList.Add(new SimpleFishPath(new List<Vector3>() {
-            behindRightRock, bottomRight, topLeft, behindLeftRock }));
+            behindRightRock, top2, bottom1, top0, behindLeftRock }));
         availablePathList.Add(new SimpleFishPath(new List<Vector3>() {
-            behindRightRock, topRight, topLeft, behindLeftRock }));
+            behindRightRock, top2, bottom1, bottom0, behindLeftRock }));
+
+        availablePathList.Add(new SimpleFishPath(new List<Vector3>() {
+            behindRightRock, bottom2, top1, top0, behindLeftRock }));
+        availablePathList.Add(new SimpleFishPath(new List<Vector3>() {
+            behindRightRock, bottom2, top1, bottom0, behindLeftRock }));
+        availablePathList.Add(new SimpleFishPath(new List<Vector3>() {
+            behindRightRock, bottom2, bottom1, top0, behindLeftRock }));
+        availablePathList.Add(new SimpleFishPath(new List<Vector3>() {
+            behindRightRock, bottom2, bottom1, bottom0, behindLeftRock }));
     }
 
     SimpleFishPath randomPath()
@@ -121,14 +151,20 @@ public class FishBehavior : Singleton<FishBehavior> {
             return;
         }
 
-        float timeOffset = Time.time - startTime;
+        float timeOffset = Time.time - startTime;        
 
-        if (timeOffset > durationInSeconds + 5.0) 
+        if (timeOffset > (durationInSeconds + 10.0 + startOffset)) 
         {
             CanvasStateManager.Instance.fishyTimeOver();
             isDoneFishing = true;
             return;
         }
+
+        if (timeOffset < startOffset)
+        {
+            return;
+        }
+        timeOffset = timeOffset - startOffset;
 
         for (int i = 0; i < troutFishList.Count; i++)
         {
@@ -169,10 +205,27 @@ public class FishBehavior : Singleton<FishBehavior> {
                 fish.nodeIdx = 1;
             }
 
+            // Loop through and find closest next fish flake
+            /*            float yTarget = -2f;
+                        int closestIdx = 0;
+                        float closestVal = 10000f;
+                        float distance = 0f;
+                        for (var i = 0; i < FlakeManager.Instance.flakeGameObjList.Count; i++)
+                        {
+                            distance = Vector3.Distance(fishObj.transform.position, FlakeManager.Instance.flakeGameObjList[i].transform.position);
+                            if (distance < closestVal)
+                            {
+                                closestVal = distance;
+                                closestIdx = i;
+                            }
+                        }
+                        Vector3 desiredPos = FlakeManager.Instance.flakeGameObjList[closestIdx].transform.position;*/
+
+
             Vector3 desiredPos = fish.path.path[fish.nodeIdx];
 
             // Interpolate to position of current node
-            fishObj.transform.position = Vector3.Lerp(fishObj.transform.position, desiredPos, Time.deltaTime * SPEED);
+            fishObj.transform.position = Vector3.Lerp(fishObj.transform.position, desiredPos, Time.deltaTime * SWIM_SPEED);
 
             //if close to current node, move to next one
             if (Vector3.Distance(fishObj.transform.position, desiredPos) < DISTANCE_CHECK)
@@ -189,13 +242,16 @@ public class FishBehavior : Singleton<FishBehavior> {
 
             if (!fish.hasFood)
             {
-                float distanceToFood = Vector3.Distance(fishFood.transform.position, fishObj.transform.position);
-                if (distanceToFood < 1.0f)
+                foreach (GameObject flake in FlakeManager.Instance.flakeGameObjList)
                 {
-                    Debug.Log("Fish got food");
-                    fish.hasFood = true;
-                    fishObj.transform.Find("Flake").gameObject.SetActive(true);
-                }
+                    float distanceToFood = Vector3.Distance(flake.transform.position, fishObj.transform.position);
+                    if (distanceToFood < 0.5f)
+                    {
+                        Debug.Log("Fish got food");
+                        fish.hasFood = true;
+                        fishObj.transform.Find("Flake").gameObject.SetActive(true);
+                    }
+                }               
             }
         }
     }
@@ -204,7 +260,10 @@ public class FishBehavior : Singleton<FishBehavior> {
     {
         Debug.Log("CreateSalmon");
         salmonFishList.Clear();
-        for (float t = 2.0f; t < durationInSeconds; t += 2.0f)
+
+        float[] timeList = new[] { 2f, 4.2f, 6.15f, 8.5f, 10.33f, 12.15f, 14.46f, 16.67f, 18.2f, 19.9f };
+
+        foreach (float t in timeList)
         {    
             Fish fish = new Fish(t, randomPath());
             Vector3 startingPos = fish.path.path[0];
@@ -232,7 +291,11 @@ public class FishBehavior : Singleton<FishBehavior> {
     {
         Debug.Log("CreateTrout");
         troutFishList.Clear();
-        for (float t = 3.0f; t < durationInSeconds; t += 2.0f)
+
+        float[] timeList = new[] { 3f, 5.5f, 7.25f, 9.5f, 11.0f, 13.5f, 15.33f, 17.77f, 19.7f };
+
+
+        foreach (float t in timeList)
         {
             Fish fish = new Fish(t, randomPath());
             troutFishList.Add(fish);
@@ -251,7 +314,11 @@ public class FishBehavior : Singleton<FishBehavior> {
         public float spawnTime;
         public bool hasFood = false;
         public int nodeIdx = 0;
+        public int flakeIdx = -1;
+        public float flakeYOffset = 0f;
         public bool rotationCorrection = true;
+        public int pileArray = 0;
+
         public Fish(float spawnTime, SimpleFishPath path)
         {
             this.spawnTime = spawnTime;

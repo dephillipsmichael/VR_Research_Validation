@@ -9,8 +9,8 @@ public class FishBehavior : Singleton<FishBehavior> {
     const float DISTANCE_CHECK = 1f;
 
     const string SHARK_NAME = "Shark";
-    const string FISH1_NAME = "BlueFish";
-    const string FISH2_NAME = "StripedFish";
+    const string FISH1_NAME = "WhiteOrangeFish";
+    const string FISH2_NAME = "BlueFish";
 
     [SerializeField]
     GameObject fishFood;
@@ -23,13 +23,13 @@ public class FishBehavior : Singleton<FishBehavior> {
 
     public GameObject sharkPrefab;
 
-    public GameObject troutPrefab;
-    List<Fish> troutFishList = new List<Fish>();
-    List<GameObject> troutObjList = new List<GameObject>();
+    public GameObject stripedPrefab;
+    List<Fish> stripedFishList = new List<Fish>();
+    List<GameObject> stripedObjList = new List<GameObject>();
 
-    public GameObject salmonPrefab;
-    List<Fish> salmonFishList = new List<Fish>();
-    List<GameObject> salmonObjList = new List<GameObject>();
+    public GameObject bluePrefab;
+    List<Fish> blueFishList = new List<Fish>();
+    List<GameObject> blueObjList = new List<GameObject>();
 
     GameObject shark;
     Fish sharkFishObj;
@@ -166,10 +166,10 @@ public class FishBehavior : Singleton<FishBehavior> {
         }
         timeOffset = timeOffset - startOffset;
 
-        for (int i = 0; i < troutFishList.Count; i++)
+        for (int i = 0; i < stripedFishList.Count; i++)
         {
-            Fish fish = troutFishList[i];
-            GameObject fishObj = troutObjList[i];
+            Fish fish = stripedFishList[i];
+            GameObject fishObj = stripedObjList[i];
 
             if (timeOffset > fish.spawnTime)
             {
@@ -177,10 +177,10 @@ public class FishBehavior : Singleton<FishBehavior> {
             }
         }
 
-        for (int i = 0; i < salmonFishList.Count; i++)
+        for (int i = 0; i < blueFishList.Count; i++)
         {
-            Fish fish = salmonFishList[i];
-            GameObject fishObj = salmonObjList[i];
+            Fish fish = blueFishList[i];
+            GameObject fishObj = blueObjList[i];
 
             if (timeOffset > fish.spawnTime)
             {
@@ -259,7 +259,7 @@ public class FishBehavior : Singleton<FishBehavior> {
     void CreateSalmon()
     {
         Debug.Log("CreateSalmon");
-        salmonFishList.Clear();
+        blueFishList.Clear();
 
         float[] timeList = new[] { 2f, 4.2f, 6.15f, 8.5f, 10.33f, 12.15f, 14.46f, 16.67f, 18.2f, 19.9f };
 
@@ -267,12 +267,12 @@ public class FishBehavior : Singleton<FishBehavior> {
         {    
             Fish fish = new Fish(t, randomPath());
             Vector3 startingPos = fish.path.path[0];
-            salmonFishList.Add(fish);
-            GameObject fishObj = Instantiate(salmonPrefab, startingPos, new Quaternion(0, 0, 0, 0));
-            fishObj.name = FISH2_NAME + salmonObjList.Count;
+            blueFishList.Add(fish);
+            GameObject fishObj = Instantiate(bluePrefab, startingPos, new Quaternion(0, 0, 0, 0));
+            fishObj.name = FISH2_NAME + blueObjList.Count;
             fishObj.SetActive(false);
             fishObj.transform.Find("Flake").gameObject.SetActive(false);
-            salmonObjList.Add(fishObj);
+            blueObjList.Add(fishObj);
         }
     }
 
@@ -290,7 +290,7 @@ public class FishBehavior : Singleton<FishBehavior> {
     void CreateTrout()
     {
         Debug.Log("CreateTrout");
-        troutFishList.Clear();
+        stripedFishList.Clear();
 
         float[] timeList = new[] { 3f, 5.5f, 7.25f, 9.5f, 11.0f, 13.5f, 15.33f, 17.77f, 19.7f };
 
@@ -298,13 +298,13 @@ public class FishBehavior : Singleton<FishBehavior> {
         foreach (float t in timeList)
         {
             Fish fish = new Fish(t, randomPath());
-            troutFishList.Add(fish);
+            stripedFishList.Add(fish);
             Vector3 startingPos = fish.path.path[0];
-            GameObject fishObj = Instantiate(troutPrefab, startingPos, new Quaternion(0, 0, 0, 0));
-            fishObj.name = FISH1_NAME + troutObjList.Count;
+            GameObject fishObj = Instantiate(stripedPrefab, startingPos, new Quaternion(0, 0, 0, 0));
+            fishObj.name = FISH1_NAME + stripedObjList.Count;
             fishObj.SetActive(false);
             fishObj.transform.Find("Flake").gameObject.SetActive(false);
-            troutObjList.Add(fishObj);
+            stripedObjList.Add(fishObj);
         }
     }
 

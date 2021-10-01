@@ -3,6 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 using UnityEngine;
 using ICSharpCode.SharpZipLib.Zip;
+using System.Text;
 
 public class DataLogger : Singleton<DataLogger>
 {
@@ -115,23 +116,30 @@ public class DataLogger : Singleton<DataLogger>
             byte[] answersJson = 
                 System.Text.Encoding.UTF8.GetBytes(
                 JsonUtility.ToJson(answers));
-
             outStream.PutNextEntry(new ZipEntry("Answers.json"));
             outStream.Write(answersJson, 0, answersJson.Length);
+
+            // Write answers CSV
+            byte[] answersCsv = createAnswersCsv(answers);
+            outStream.PutNextEntry(new ZipEntry("Answers.csv"));
+            outStream.Write(answersCsv, 0, answersCsv.Length);
 
             // Write Gaze at JSON
             byte[] gazeJson =
                 System.Text.Encoding.UTF8.GetBytes(
                 JsonUtility.ToJson(gazetAt));
-
             outStream.PutNextEntry(new ZipEntry("GazingAt.json"));
             outStream.Write(gazeJson, 0, gazeJson.Length);
+
+            // Write answers CSV
+            byte[] gazeCsv = createGazeCsv(gazetAt);
+            outStream.PutNextEntry(new ZipEntry("GazingAt.csv"));
+            outStream.Write(gazeCsv, 0, gazeCsv.Length);
 
             // Write Eyes and Head at JSON
             byte[] eyesAndHeadJson =
                 System.Text.Encoding.UTF8.GetBytes(
                 JsonUtility.ToJson(eyesAndHeadData));
-
             outStream.PutNextEntry(new ZipEntry("EyesAndHead.json"));
             outStream.Write(eyesAndHeadJson, 0, eyesAndHeadJson.Length);
         }      
@@ -139,6 +147,34 @@ public class DataLogger : Singleton<DataLogger>
         gazetAt.data.Clear();
         eyesAndHeadData.data.Clear();
         answers.data.Clear();
+    }
+
+    private byte[] createAnswersCsv(QuestionData answers)
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.Append("Identifier,Value\n");
+        foreach (QuestionData.Answer answer in answers.data)
+        {
+            sb.Append(answer.identifier);
+            sb.Append(",");
+            sb.Append(answer.value);
+            sb.Append("\n");
+        }
+        return Encoding.UTF8.GetBytes(sb.ToString());
+    }
+
+    private byte[] createGazeCsv(GazeAtData gazes)
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.Append("Time,Gazing At\n");
+        foreach (GazeAtData.GazingAt gaze in gazes.data)
+        {
+            sb.Append(gaze.time);
+            sb.Append(",");
+            sb.Append(gaze.name);
+            sb.Append("\n");
+        }
+        return Encoding.UTF8.GetBytes(sb.ToString());
     }
 
     [Serializable]

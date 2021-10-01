@@ -32354,8 +32354,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fishFood: {fileID: 761055196}
   sharkPrefab: {fileID: 1258308252}
-  troutPrefab: {fileID: 1672011604}
-  salmonPrefab: {fileID: 999222277}
+  stripedPrefab: {fileID: 1672011604}
+  bluePrefab: {fileID: 999222277}
 --- !u!4 &553331021
 Transform:
   m_ObjectHideFlags: 0

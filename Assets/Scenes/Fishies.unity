@@ -21761,7 +21761,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 347477052}
   m_LocalRotation: {x: 0.00428021, y: 0.13582112, z: 0.031205775, w: 0.9902326}
-  m_LocalPosition: {x: -3.093, y: -2.698, z: -6.66}
+  m_LocalPosition: {x: -3.064, y: -3.177, z: -6.668}
   m_LocalScale: {x: -0.21999997, y: 0.28000006, z: 1.12}
   m_Children: []
   m_Father: {fileID: 811268172}
@@ -43666,7 +43666,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 761055196}
   m_LocalRotation: {x: 0.00025838043, y: 0.0081990175, z: -0.031496886, w: -0.9994702}
-  m_LocalPosition: {x: -0.2990085, y: -2.861, z: -7.162856}
+  m_LocalPosition: {x: -0.27, y: -3.32, z: -7.16}
   m_LocalScale: {x: -0.22, y: 0.28000003, z: 1.1200002}
   m_Children: []
   m_Father: {fileID: 811268172}
@@ -104772,7 +104772,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1434312115}
   m_LocalRotation: {x: -0.003251424, y: -0.10317532, z: 0.031329684, w: 0.99416435}
-  m_LocalPosition: {x: 2.656, y: -2.962, z: -7.243}
+  m_LocalPosition: {x: 2.7, y: -3.61, z: -7.23}
   m_LocalScale: {x: -0.21999997, y: 0.28000006, z: 1.12}
   m_Children: []
   m_Father: {fileID: 811268172}
@@ -153346,8 +153346,13 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Your goal is to determine how many BLUE fish grab food from the pile. 
-    \n\nAre you ready?\n"
+  m_text: 'Your goal is to determine how many BLUE fish grab the food that is floating
+    down from above.
+
+
+    Are you ready?
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

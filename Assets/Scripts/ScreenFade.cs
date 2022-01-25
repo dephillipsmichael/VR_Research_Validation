@@ -1,4 +1,7 @@
 using UnityEngine;
+using UnityEngine.Events;
+using System.Collections;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(CanvasGroup))]
 public class ScreenFade : MonoBehaviour {
@@ -11,6 +14,12 @@ public class ScreenFade : MonoBehaviour {
 
     float desiredAlpha;
     CanvasGroup canvasGroup;
+
+    [SerializeField]
+    List<UnityEvent> showScreenEventList = new List<UnityEvent>();
+
+    [SerializeField]
+    List<UnityEvent> closeScreenEventList = new List<UnityEvent>();
 
     void Awake() {
         canvasGroup = GetComponent<CanvasGroup>();
@@ -32,6 +41,10 @@ public class ScreenFade : MonoBehaviour {
 
     public void OpenScreen() {
         ToggleScreen(true);
+        foreach(UnityEvent evt in showScreenEventList)
+        {
+            evt?.Invoke();
+        }
     }
 
     public void CloseScreen(bool immediate = false) {
@@ -39,6 +52,10 @@ public class ScreenFade : MonoBehaviour {
         if (immediate) {
             desiredAlpha = 0;
             canvasGroup.alpha = 0;
+        }
+        foreach (UnityEvent evt in closeScreenEventList)
+        {
+            evt?.Invoke();
         }
     }
 

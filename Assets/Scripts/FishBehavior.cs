@@ -12,9 +12,6 @@ public class FishBehavior : Singleton<FishBehavior> {
     const string FISH1_NAME = "WhiteOrangeFish";
     const string FISH2_NAME = "BlueFish";
 
-    [SerializeField]
-    GameObject fishFood;
-
     Vector3 behindLeftRock = new Vector3(-7.9599991f, -1.73000002f, 13.1630001f);    
     Vector3 behindRightRock = new Vector3(12.8900003f, -0.800000012f, 12.2980003f);
     Vector2 behindRockYRange = new Vector2(-3.0f, 0.0f);
@@ -33,11 +30,13 @@ public class FishBehavior : Singleton<FishBehavior> {
 
     GameObject shark;
     Fish sharkFishObj;
+
     float sharkTime = 15.0f;
 
     float startTime = 0.0f;
     float startOffset = 0.0f;
-    float durationInSeconds = 20.0f;// 20 seconds * 60.0f; // 4 minutes
+    float durationInSeconds = 20.0f;
+    float fishPerMinute = 60.0f;
 
     bool isDoneFishing = false;
 
@@ -48,6 +47,9 @@ public class FishBehavior : Singleton<FishBehavior> {
 
     public void startFishin()
     {
+        durationInSeconds = Settings.getPlayerPref(Settings.PLAYER_PREF_KEY_DURATION);
+        sharkTime = Settings.getPlayerPref(Settings.PLAYER_PREF_KEY_SHARK);
+        fishPerMinute = Settings.getPlayerPref(Settings.PLAYER_PREF_KEY_FISH_DENSITY);
         isDoneFishing = false;
         random = new System.Random();
         startTime = Time.time;
@@ -60,11 +62,6 @@ public class FishBehavior : Singleton<FishBehavior> {
 
     void CreateAvailableFishPaths()
     {
-        if (fishFood == null)
-        {
-            return;
-        }
-
         Debug.Log("CreateAvailableFishPaths");
 
         float yVal = -1;
@@ -263,9 +260,11 @@ public class FishBehavior : Singleton<FishBehavior> {
 
         float[] timeList = new[] { 2f, 4.2f, 6.15f, 8.5f, 10.33f, 12.15f, 14.46f, 16.67f, 18.2f, 19.9f };
 
-        foreach (float t in timeList)
-        {    
-            Fish fish = new Fish(t, randomPath());
+        float time = 2f;
+        float fishPerSecond = fishPerMinute / 60.0f;
+        while (time < durationInSeconds)
+        {  
+            Fish fish = new Fish(time, randomPath());
             Vector3 startingPos = fish.path.path[0];
             blueFishList.Add(fish);
             GameObject fishObj = Instantiate(bluePrefab, startingPos, new Quaternion(0, 0, 0, 0));
@@ -273,6 +272,8 @@ public class FishBehavior : Singleton<FishBehavior> {
             fishObj.SetActive(false);
             fishObj.transform.Find("Flake").gameObject.SetActive(false);
             blueObjList.Add(fishObj);
+
+            time = time + (1.0f / fishPerSecond) + (0.2f * (1.0f / fishPerSecond));
         }
     }
 
@@ -292,12 +293,11 @@ public class FishBehavior : Singleton<FishBehavior> {
         Debug.Log("CreateTrout");
         stripedFishList.Clear();
 
-        float[] timeList = new[] { 3f, 5.5f, 7.25f, 9.5f, 11.0f, 13.5f, 15.33f, 17.77f, 19.7f };
-
-
-        foreach (float t in timeList)
+        float time = 3f;
+        float fishPerSecond = fishPerMinute / 60.0f;
+        while (time < durationInSeconds)
         {
-            Fish fish = new Fish(t, randomPath());
+            Fish fish = new Fish(time, randomPath());
             stripedFishList.Add(fish);
             Vector3 startingPos = fish.path.path[0];
             GameObject fishObj = Instantiate(stripedPrefab, startingPos, new Quaternion(0, 0, 0, 0));
@@ -305,6 +305,8 @@ public class FishBehavior : Singleton<FishBehavior> {
             fishObj.SetActive(false);
             fishObj.transform.Find("Flake").gameObject.SetActive(false);
             stripedObjList.Add(fishObj);
+
+            time = time + (1.0f / fishPerSecond) + (0.2f * (1.0f / fishPerSecond));
         }
     }
 

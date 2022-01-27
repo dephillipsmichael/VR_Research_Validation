@@ -33,6 +33,7 @@ public class FlakeManager : Singleton<FlakeManager> {
 
     public void startFishin()
     {
+        durationInSeconds = Settings.getPlayerPref(Settings.PLAYER_PREF_KEY_DURATION);
         isDoneFishing = false;
         random = new System.Random();
         startTime = Time.time;

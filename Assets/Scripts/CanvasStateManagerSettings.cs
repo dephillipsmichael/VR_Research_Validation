@@ -16,7 +16,15 @@ public class CanvasStateManagerSettings : Singleton<CanvasStateManagerSettings>
     [SerializeField]
     TextMeshProUGUI DurationValueText;
 
-    public static string PLAYER_PREF_KEY_DURATION = "SettingDuration";
+    [SerializeField]
+    Slider SharkSlider;
+    [SerializeField]
+    TextMeshProUGUI SharkValueText;
+
+    [SerializeField]
+    Slider FishDensitySlider;
+    [SerializeField]
+    TextMeshProUGUI FishDensityValueText;
 
     protected override void Awake()
     {
@@ -36,20 +44,10 @@ public class CanvasStateManagerSettings : Singleton<CanvasStateManagerSettings>
 
     public void moveForward(string answer)
     {
-        if (index >= 0 && index < canvasCount())
-        {
-            string identifier = transform.GetComponentsInChildren<ScreenFade>()[index].gameObject.name;
-            if (identifier != null && answer != null)
-            {
-                DataLogger.Instance.setAnswer(identifier, answer);
-            }
-        }
-
         if ((index + 1) >= canvasCount())
         {
             // End of the line
             closeAllCanvas();
-            DataLogger.Instance.saveDataToFile();
             return;
         }
         index++;
@@ -101,23 +99,26 @@ public class CanvasStateManagerSettings : Singleton<CanvasStateManagerSettings>
         closeAllCanvas();
         transform.GetComponentsInChildren<ScreenFade>()[index].OpenScreen();        
 
+        // Initialize UI to their current values
         if (index == 0)
         {
-            if (PlayerPrefs.HasKey(PLAYER_PREF_KEY_DURATION)) {
-                DurationSlider.value = PlayerPrefs.GetFloat(PLAYER_PREF_KEY_DURATION);
-            }            
+            float duration = Settings.getPlayerPref(Settings.PLAYER_PREF_KEY_DURATION);
+            DurationValueText.text = (int)duration + " seconds";
+            DurationSlider.value = duration;
+
+            float sharkTime = Settings.getPlayerPref(Settings.PLAYER_PREF_KEY_SHARK);
+            SharkValueText.text = (int)sharkTime + " seconds";
+            SharkSlider.value = sharkTime;
+
+            float fishDensity = Settings.getPlayerPref(Settings.PLAYER_PREF_KEY_FISH_DENSITY);
+            FishDensityValueText.text = (int)fishDensity + " per minute";
+            FishDensitySlider.value = fishDensity;
         }
     }
 
     // Start is called before the first frame update
     void Start()
-    {
-        foreach (ScreenFade screen in transform.GetComponentsInChildren<ScreenFade>())
-        {
-            print("Screen " + screen.name);
-        }
-
-        onDurationSliderChanged(Settings.getPlayerPref(Settings.PLAYER_PREF_KEY_DURATION));        
+    {  
     }
 
     public void Update()
@@ -127,7 +128,7 @@ public class CanvasStateManagerSettings : Singleton<CanvasStateManagerSettings>
             if(Input.GetMouseButtonDown(0))
             {
                 openCanvas(0);
-                //moveForward();
+
             }
             if (Input.GetMouseButtonDown(1))
             {
@@ -145,17 +146,29 @@ public class CanvasStateManagerSettings : Singleton<CanvasStateManagerSettings>
 
     public void noButtonClicked()
     {
-        CanvasStateManager.Instance.moveForward("no");
+        CanvasStateManagerSettings.Instance.moveForward("no");
     }
 
     public void yesButtonClicked()
     {
-        CanvasStateManager.Instance.moveForward("yes");
+        CanvasStateManagerSettings.Instance.moveForward("yes");
     }
 
     public void onDurationSliderChanged(float val)
     {
-        Settings.setPlayerPref(PLAYER_PREF_KEY_DURATION, val);
+        Settings.setPlayerPref(Settings.PLAYER_PREF_KEY_DURATION, val);
         DurationValueText.text = (int)val + " seconds";
+    }
+
+    public void onSharkSliderChanged(float val)
+    {
+        Settings.setPlayerPref(Settings.PLAYER_PREF_KEY_SHARK, val);
+        SharkValueText.text = (int)val + " seconds";
+    }
+
+    public void onFishDensitySliderChanged(float val)
+    {
+        Settings.setPlayerPref(Settings.PLAYER_PREF_KEY_FISH_DENSITY, val);
+        FishDensityValueText.text = (int)val + " fish per minute";
     }
 }

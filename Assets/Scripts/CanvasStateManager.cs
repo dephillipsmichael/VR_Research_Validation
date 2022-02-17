@@ -101,10 +101,21 @@ public class CanvasStateManager : Singleton<CanvasStateManager>
         }
     }
 
+    public void refreshCurrentCanvas()
+    {
+        openCanvas(index);
+    }
+
     private void openCanvas(int index)
     {
         closeAllCanvas();
-        transform.GetComponentsInChildren<ScreenFade>()[index].OpenScreen();        
+        ScreenFade screen = transform.GetComponentsInChildren<ScreenFade>()[index];
+        LocalizedText[] textToLocalize = screen.gameObject.GetComponentsInChildren<LocalizedText>();
+        foreach(LocalizedText text in textToLocalize)
+        {
+            text.localize();
+        }
+        screen.OpenScreen();
     }
 
     // Start is called before the first frame update

@@ -1,0 +1,110 @@
+{
+  "en_US": [
+    {
+      "key": "participant_id_title",
+      "value": "Enter your participant ID:"
+    },
+    {
+      "key": "blue_fish_title",
+      "value": "This is the blue fish."
+    },
+    {
+      "key": "orange_fish_title",
+      "value": "This is the orange fish."
+    },
+    {
+      "key": "food_title",
+      "value": "The fish will grab the food by taking it and swimming away."
+    },
+    {
+      "key": "challenge_title",
+      "value": "Your goal is to determine how many BLUE fish grab the food. Are you ready?"
+    },
+    {
+      "key": "blue_fish_question_title",
+      "value": "How many blue fish did you see grab the food?"
+    },
+    {
+      "key": "octopus_question_title",
+      "value": "Did you see an octopus?"
+    },
+    {
+      "key": "shark_question_title",
+      "value": "Did you see a shark?"
+    },
+    {
+      "key": "continue",
+      "value": "Continue"
+    },
+    {
+      "key": "i_understand",
+      "value": "I understand"
+    },
+    {
+      "key": "yes_ready",
+      "value": "Yes, I’m ready"
+    },
+    {
+      "key": "no",
+      "value": "No"
+    },
+    {
+      "key": "yes",
+      "value": "Yes"
+    }
+  ],
+  "pt_PT": [
+    {
+      "key": "participant_id_title",
+      "value": "Introduza o seu número de participante:"
+    },
+    {
+      "key": "blue_fish_title",
+      "value": "Este é um exemplar de um peixe azul."
+    },
+    {
+      "key": "orange_fish_title",
+      "value": "Este é um exemplar de um peixe cor-de-laranja."
+    },
+    {
+      "key": "food_title",
+      "value": "Os peixes vão apanhar pedaços de comida, agarrando-a com a boca e nadando para longe (como no exemplo abaixo)."
+    },
+    {
+      "key": "challenge_title",
+      "value": "A sua tarefa será determinar quantos peixes AZUIS conseguiram apanhar um pedaço de comida. Está preparad@?"
+    },
+    {
+      "key": "blue_fish_question_title",
+      "value": "Quantos peixes azuis conseguiu ver a apanharem comida com a boca?"
+    },
+    {
+      "key": "octopus_question_title",
+      "value": "Durante a experiência, viu um polvo?"
+    },
+    {
+      "key": "shark_question_title",
+      "value": "Durante a experiência, viu um tubarão?"
+    },
+    {
+      "key": "continue",
+      "value": "Continuar"
+    },
+    {
+      "key": "i_understand",
+      "value": "Sim, entendi"
+    },
+    {
+      "key": "yes_ready",
+      "value": "Sim, estou"
+    },
+    {
+      "key": "no",
+      "value": "Não"
+    },
+    {
+      "key": "yes",
+      "value": "Sim"
+    }
+  ]
+}

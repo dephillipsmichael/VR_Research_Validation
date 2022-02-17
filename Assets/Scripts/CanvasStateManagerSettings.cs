@@ -26,6 +26,11 @@ public class CanvasStateManagerSettings : Singleton<CanvasStateManagerSettings>
     [SerializeField]
     TextMeshProUGUI FishDensityValueText;
 
+    [SerializeField]
+    Toggle englishToggle;
+    [SerializeField]
+    Toggle portugueseToggle;
+
     protected override void Awake()
     {
         base.Awake();
@@ -113,6 +118,11 @@ public class CanvasStateManagerSettings : Singleton<CanvasStateManagerSettings>
             float fishDensity = Settings.getPlayerPref(Settings.PLAYER_PREF_KEY_FISH_DENSITY);
             FishDensityValueText.text = (int)fishDensity + " per minute";
             FishDensitySlider.value = fishDensity;
+
+            string langStr = Settings.getPlayerPref(Settings.PLAYER_PREF_KEY_LANGUAGE, Settings.LANGUAGE_PREF_ENGLISH);
+            bool isEnglishSelected = (langStr == Settings.LANGUAGE_PREF_ENGLISH);
+            englishToggle.isOn = isEnglishSelected;
+            portugueseToggle.isOn = !isEnglishSelected;
         }
     }
 
@@ -170,5 +180,27 @@ public class CanvasStateManagerSettings : Singleton<CanvasStateManagerSettings>
     {
         Settings.setPlayerPref(Settings.PLAYER_PREF_KEY_FISH_DENSITY, val);
         FishDensityValueText.text = (int)val + " fish per minute";
+    }
+
+    public void onEnglishLanguageSelected(bool selected)
+    {
+        Debug.Log("onEnglishLanguageSelected " + selected);
+        if (selected)
+        {
+            Settings.setPlayerPref(Settings.PLAYER_PREF_KEY_LANGUAGE, Settings.LANGUAGE_PREF_ENGLISH);
+            Settings.reloadLocalization();
+            CanvasStateManager.Instance.refreshCurrentCanvas();
+        }
+    }
+
+    public void onPortugueseLanguageSelected(bool selected)
+    {
+        Debug.Log("onPortugueseLanguageSelected " + selected);
+        if (selected)
+        {
+            Settings.setPlayerPref(Settings.PLAYER_PREF_KEY_LANGUAGE, Settings.LANGUAGE_PREF_PORTUGUESE);
+            Settings.reloadLocalization();
+            CanvasStateManager.Instance.refreshCurrentCanvas();
+        }
     }
 }

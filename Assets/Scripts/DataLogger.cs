@@ -19,6 +19,8 @@ public class DataLogger : Singleton<DataLogger>
     private QuestionData answers = new QuestionData();
     public GazeAtData gazetAt = new GazeAtData();
     public EyesAndHeadData eyesAndHeadData = new EyesAndHeadData();
+    public FishAndSharkResultDataList fishPositionData = new FishAndSharkResultDataList();
+    public EventTimestampDataList eventList = new EventTimestampDataList();
 
     private bool isTracking = false;
 
@@ -81,6 +83,25 @@ public class DataLogger : Singleton<DataLogger>
         }
     }
 
+    public void logEventTimestamp(String eventName, float timestamp) 
+    {
+        EventTimestampDataList.EventTimestampData data = new EventTimestampDataList.EventTimestampData();
+        data.eventName = eventName;
+        data.time = timestamp;
+        eventList.eventList.Add(data);
+    }
+
+    public void logFishAndSharkData(float startTime, float endTime, string identifier, string startPosition, bool didEatFood)
+    {
+        FishAndSharkResultDataList.FishAndSharkResultData data = new FishAndSharkResultDataList.FishAndSharkResultData();
+        data.startPosition = startPosition;
+        data.startTime = startTime;
+        data.endTime = endTime;
+        data.identifier = identifier;
+        data.didEatFood = didEatFood;
+        fishPositionData.dataList.Add(data);
+    }
+
     public void startTracking()
     {
         Debug.Log("Start tracking");
@@ -112,29 +133,25 @@ public class DataLogger : Singleton<DataLogger>
             outStream.Password = "SDP";
             outStream.UseZip64 = UseZip64.Off;
 
-            // Write answers JSON
-            byte[] answersJson = 
-                System.Text.Encoding.UTF8.GetBytes(
-                JsonUtility.ToJson(answers));
-            outStream.PutNextEntry(new ZipEntry("Answers.json"));
-            outStream.Write(answersJson, 0, answersJson.Length);
-
             // Write answers CSV
             byte[] answersCsv = createAnswersCsv(answers);
             outStream.PutNextEntry(new ZipEntry("Answers.csv"));
             outStream.Write(answersCsv, 0, answersCsv.Length);
 
-            // Write Gaze at JSON
-            byte[] gazeJson =
-                System.Text.Encoding.UTF8.GetBytes(
-                JsonUtility.ToJson(gazetAt));
-            outStream.PutNextEntry(new ZipEntry("GazingAt.json"));
-            outStream.Write(gazeJson, 0, gazeJson.Length);
-
             // Write answers CSV
             byte[] gazeCsv = createGazeCsv(gazetAt);
             outStream.PutNextEntry(new ZipEntry("GazingAt.csv"));
             outStream.Write(gazeCsv, 0, gazeCsv.Length);
+
+            // Write Events CSV
+            byte[] eventsCsv = createTimestampEventsCsv(eventList);
+            outStream.PutNextEntry(new ZipEntry("EventList.csv"));
+            outStream.Write(eventsCsv, 0, eventsCsv.Length);
+
+            // Write Fish And Shark Info CSV
+            byte[] fishAndSharkInfoCsv = createFishAndSharkInfoCsv(fishPositionData);
+            outStream.PutNextEntry(new ZipEntry("FishAndSharkInfo.csv"));
+            outStream.Write(fishAndSharkInfoCsv, 0, fishAndSharkInfoCsv.Length);
 
             // Write Eyes and Head at JSON
             byte[] eyesAndHeadJson =
@@ -147,6 +164,8 @@ public class DataLogger : Singleton<DataLogger>
         gazetAt.data.Clear();
         eyesAndHeadData.data.Clear();
         answers.data.Clear();
+        eventList.eventList.Clear();
+        fishPositionData.dataList.Clear();
     }
 
     private byte[] createAnswersCsv(QuestionData answers)
@@ -172,6 +191,40 @@ public class DataLogger : Singleton<DataLogger>
             sb.Append(gaze.time);
             sb.Append(",");
             sb.Append(gaze.name);
+            sb.Append("\n");
+        }
+        return Encoding.UTF8.GetBytes(sb.ToString());
+    }
+
+    private byte[] createTimestampEventsCsv(EventTimestampDataList data)
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.Append("Time,Event Name\n");
+        foreach (EventTimestampDataList.EventTimestampData dataPoint in data.eventList)
+        {
+            sb.Append(dataPoint.time);
+            sb.Append(",");
+            sb.Append(dataPoint.eventName);
+            sb.Append("\n");
+        }
+        return Encoding.UTF8.GetBytes(sb.ToString());
+    }
+
+    private byte[] createFishAndSharkInfoCsv(FishAndSharkResultDataList data)
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.Append("Identifier,Start Time,End Time,Start Position,Did Eat Food?\n");
+        foreach (FishAndSharkResultDataList.FishAndSharkResultData dataPoint in data.dataList)
+        {
+            sb.Append(dataPoint.identifier);
+            sb.Append(",");
+            sb.Append(dataPoint.startTime);
+            sb.Append(",");
+            sb.Append(dataPoint.endTime);
+            sb.Append(",");
+            sb.Append(dataPoint.startPosition);
+            sb.Append(",");
+            sb.Append(dataPoint.didEatFood);
             sb.Append("\n");
         }
         return Encoding.UTF8.GetBytes(sb.ToString());
@@ -239,6 +292,34 @@ public class DataLogger : Singleton<DataLogger>
                 this.eyePos = eyePosition;
                 this.eyeDir = eyeDirection;
             }
+        }
+    }
+
+    [Serializable]
+    public class EventTimestampDataList
+    {
+        public List<EventTimestampData> eventList = new List<EventTimestampData>();
+
+        [Serializable]
+        public class EventTimestampData {
+            public float time;
+            public string eventName;
+        }
+    }
+
+    [Serializable] 
+    public class FishAndSharkResultDataList
+    {
+        public List<FishAndSharkResultData> dataList =  new List<FishAndSharkResultData>();
+
+        [Serializable]
+        public class FishAndSharkResultData
+        {
+            public float startTime;
+            public float endTime;
+            public string identifier;
+            public string startPosition;
+            public bool didEatFood;
         }
     }
 }

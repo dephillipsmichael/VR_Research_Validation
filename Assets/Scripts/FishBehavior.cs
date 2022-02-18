@@ -9,7 +9,7 @@ public class FishBehavior : Singleton<FishBehavior> {
     const float DISTANCE_CHECK = 1f;
 
     const string SHARK_NAME = "Shark";
-    const string FISH1_NAME = "WhiteOrangeFish";
+    const string FISH1_NAME = "OrangeFish";
     const string FISH2_NAME = "BlueFish";
 
     Vector3 behindLeftRock = new Vector3(-7.9599991f, -1.73000002f, 13.1630001f);    
@@ -58,6 +58,7 @@ public class FishBehavior : Singleton<FishBehavior> {
         CreateTrout();
         CreateShark();
         FlakeManager.Instance.startFishin();
+        DataLogger.Instance.logEventTimestamp("start", startTime);
     }
 
     void CreateAvailableFishPaths()
@@ -152,8 +153,9 @@ public class FishBehavior : Singleton<FishBehavior> {
 
         if (timeOffset > (durationInSeconds + 10.0 + startOffset)) 
         {
+            DataLogger.Instance.logEventTimestamp("end", Time.time);
             CanvasStateManager.Instance.fishyTimeOver();
-            isDoneFishing = true;
+            isDoneFishing = true;           
             return;
         }
 
@@ -170,7 +172,7 @@ public class FishBehavior : Singleton<FishBehavior> {
 
             if (timeOffset > fish.spawnTime)
             {
-                UpdateFish(fish, fishObj);
+                UpdateFish(fish, fishObj, timeOffset);
             }
         }
 
@@ -181,18 +183,18 @@ public class FishBehavior : Singleton<FishBehavior> {
 
             if (timeOffset > fish.spawnTime)
             {
-                UpdateFish(fish, fishObj);
+                UpdateFish(fish, fishObj, timeOffset);
             }
         }
 
         if (sharkFishObj != null && 
             timeOffset > sharkFishObj.spawnTime)
         {
-            UpdateFish(sharkFishObj, shark);
+            UpdateFish(sharkFishObj, shark, timeOffset);
         }
     }
 
-    void UpdateFish(Fish fish, GameObject fishObj)
+    void UpdateFish(Fish fish, GameObject fishObj, float timeOffset)
     {
         if (fish.nodeIdx < fish.path.path.Count)
         {
@@ -228,6 +230,17 @@ public class FishBehavior : Singleton<FishBehavior> {
             if (Vector3.Distance(fishObj.transform.position, desiredPos) < DISTANCE_CHECK)
             {
                 fish.nodeIdx += 1;
+                if (fish.nodeIdx >= fish.path.path.Count)
+                {
+                    float fishStartTime = startTime + fish.spawnTime;
+                    float fishEndTime = Time.time;
+                    string fishStartingPos = "right";
+                    if (fish.path.path[0].x < 0)
+                    {
+                        fishStartingPos = "left";
+                    }
+                    DataLogger.Instance.logFishAndSharkData(fishStartTime, fishEndTime, fishObj.name, fishStartingPos, fish.hasFood);
+                }
             }
 
             fishObj.transform.LookAt(desiredPos);
@@ -279,8 +292,9 @@ public class FishBehavior : Singleton<FishBehavior> {
 
     void CreateShark()
     {
-        Debug.Log("Create Shark");
-        sharkFishObj = new Fish(sharkTime, availablePathList[0]);
+        Debug.Log("Create Shark");        
+        float sharkTimeRandom = sharkTime + UnityEngine.Random.Range(-5.0f, 5.0f);
+        sharkFishObj = new Fish(sharkTimeRandom, availablePathList[0]);
         sharkFishObj.rotationCorrection = false;
         shark = Instantiate(sharkPrefab, sharkFishObj.path.path[0], new Quaternion(0, 0, 0, 0));
         shark.name = SHARK_NAME;

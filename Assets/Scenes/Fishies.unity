@@ -35642,7 +35642,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 11442420, guid: f4d2c95a82cadba4fb259ca17b5a8404, type: 3}
       propertyPath: showFPS
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 11442420, guid: f4d2c95a82cadba4fb259ca17b5a8404, type: 3}
       propertyPath: rtSize.x
@@ -149460,6 +149460,10 @@ MonoBehaviour:
     data: []
   eyesAndHeadData:
     data: []
+  fishPositionData:
+    dataList: []
+  eventList:
+    eventList: []
 --- !u!1 &1929267732
 GameObject:
   m_ObjectHideFlags: 0

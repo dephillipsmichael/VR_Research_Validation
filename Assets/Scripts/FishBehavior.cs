@@ -38,6 +38,7 @@ public class FishBehavior : Singleton<FishBehavior> {
     float durationInSeconds = 20.0f;
     float fishPerMinute = 60.0f;
 
+    bool hasStartedFishing = false;
     bool isDoneFishing = false;
 
     System.Random random;
@@ -50,6 +51,7 @@ public class FishBehavior : Singleton<FishBehavior> {
         durationInSeconds = Settings.getPlayerPref(Settings.PLAYER_PREF_KEY_DURATION);
         sharkTime = Settings.getPlayerPref(Settings.PLAYER_PREF_KEY_SHARK);
         fishPerMinute = Settings.getPlayerPref(Settings.PLAYER_PREF_KEY_FISH_DENSITY);
+        hasStartedFishing = true;
         isDoneFishing = false;
         random = new System.Random();
         startTime = Time.time;
@@ -144,7 +146,7 @@ public class FishBehavior : Singleton<FishBehavior> {
 
     void Update() {
 
-        if (isDoneFishing)
+        if (isDoneFishing || !hasStartedFishing)
         {
             return;
         }

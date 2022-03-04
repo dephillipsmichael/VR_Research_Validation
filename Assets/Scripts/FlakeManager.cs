@@ -24,6 +24,7 @@ public class FlakeManager : Singleton<FlakeManager> {
     float startTime = 0.0f;    
     float durationInSeconds = 20.0f;// 20 seconds * 60.0f; // 4 minutes
 
+    bool hasStartedFishing = false;
     bool isDoneFishing = false;
 
     System.Random random;
@@ -34,6 +35,7 @@ public class FlakeManager : Singleton<FlakeManager> {
     public void startFishin()
     {
         durationInSeconds = Settings.getPlayerPref(Settings.PLAYER_PREF_KEY_DURATION);
+        hasStartedFishing = true;
         isDoneFishing = false;
         random = new System.Random();
         startTime = Time.time;
@@ -42,7 +44,7 @@ public class FlakeManager : Singleton<FlakeManager> {
 
     void Update() {
 
-        if (isDoneFishing)
+        if (isDoneFishing || !hasStartedFishing)
         {
             return;
         }

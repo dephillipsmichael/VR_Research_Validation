@@ -116,6 +116,7 @@ public class CanvasStateManager : Singleton<CanvasStateManager>
             text.localize();
         }
         screen.OpenScreen();
+        DataLogger.Instance.logEventTimestamp("UserShownScreen" + index, Time.time);
     }
 
     // Start is called before the first frame update

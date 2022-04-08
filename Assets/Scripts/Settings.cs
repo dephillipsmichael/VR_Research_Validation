@@ -40,11 +40,6 @@ public static class Settings
             PlayerPrefs.SetFloat(PLAYER_PREF_KEY_FISH_DENSITY, DEFAULT_FISH_DENSITY);
             return DEFAULT_FISH_DENSITY;
         }
-        else if (key == PLAYER_PREF_KEY_FISH_DENSITY)
-        {
-            PlayerPrefs.SetFloat(PLAYER_PREF_KEY_FISH_DENSITY, DEFAULT_FISH_DENSITY);
-            return DEFAULT_FISH_DENSITY;
-        }
 
         return 0.0f;
     }

@@ -252,7 +252,7 @@ public class FishBehavior : Singleton<FishBehavior> {
                 fishObj.transform.rotation *= Quaternion.AngleAxis(90, transform.up);
             }            
 
-            if (!fish.hasFood)
+            if (!fish.hasFood && fish.name != SHARK_NAME)
             {
                 foreach (GameObject flake in FlakeManager.Instance.flakeGameObjList)
                 {
@@ -262,6 +262,7 @@ public class FishBehavior : Singleton<FishBehavior> {
                         Debug.Log("Fish got food");
                         fish.hasFood = true;
                         fishObj.transform.Find("Flake").gameObject.SetActive(true);
+                        fishObj.GetComponent<AudioSource>().Play();
                     }
                 }               
             }
@@ -283,7 +284,8 @@ public class FishBehavior : Singleton<FishBehavior> {
             Vector3 startingPos = fish.path.path[0];
             blueFishList.Add(fish);
             GameObject fishObj = Instantiate(bluePrefab, startingPos, new Quaternion(0, 0, 0, 0));
-            fishObj.name = FISH2_NAME + blueObjList.Count;
+            fish.name = FISH2_NAME + blueObjList.Count;
+            fishObj.name = fish.name;
             fishObj.SetActive(false);
             fishObj.transform.Find("Flake").gameObject.SetActive(false);
             blueObjList.Add(fishObj);
@@ -296,10 +298,12 @@ public class FishBehavior : Singleton<FishBehavior> {
     {
         Debug.Log("Create Shark");        
         float sharkTimeRandom = sharkTime + UnityEngine.Random.Range(-5.0f, 5.0f);
-        sharkFishObj = new Fish(sharkTimeRandom, availablePathList[0]);
+        sharkFishObj = new Fish(sharkTimeRandom, randomPath());
+        Vector3 startingPos = sharkFishObj.path.path[0];
         sharkFishObj.rotationCorrection = false;
-        shark = Instantiate(sharkPrefab, sharkFishObj.path.path[0], new Quaternion(0, 0, 0, 0));
-        shark.name = SHARK_NAME;
+        shark = Instantiate(sharkPrefab, startingPos, new Quaternion(0, 0, 0, 0));
+        sharkFishObj.name = SHARK_NAME;
+        shark.name = sharkFishObj.name;
         shark.SetActive(false);
         shark.transform.Find("Flake").gameObject.SetActive(false);
     }
@@ -317,7 +321,8 @@ public class FishBehavior : Singleton<FishBehavior> {
             stripedFishList.Add(fish);
             Vector3 startingPos = fish.path.path[0];
             GameObject fishObj = Instantiate(stripedPrefab, startingPos, new Quaternion(0, 0, 0, 0));
-            fishObj.name = FISH1_NAME + stripedObjList.Count;
+            fish.name = FISH1_NAME + stripedObjList.Count;
+            fishObj.name = fish.name;
             fishObj.SetActive(false);
             fishObj.transform.Find("Flake").gameObject.SetActive(false);
             stripedObjList.Add(fishObj);
@@ -336,6 +341,7 @@ public class FishBehavior : Singleton<FishBehavior> {
         public float flakeYOffset = 0f;
         public bool rotationCorrection = true;
         public int pileArray = 0;
+        public string name = "";
 
         public Fish(float spawnTime, SimpleFishPath path)
         {

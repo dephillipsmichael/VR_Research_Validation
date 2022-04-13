@@ -7,11 +7,13 @@ public static class Settings
     const float DEFAULT_DURATION = 60.0f;
     const float DEFAULT_SHARK = 15.0f;
     const float DEFAULT_FISH_DENSITY = 60f;
+    const float DEFAULT_FISH_EAT_PERCENTAGE = 30f;
 
     public static string PLAYER_PREF_KEY_DURATION = "SettingDuration";
     public static string PLAYER_PREF_KEY_SHARK = "SettingSharkTime";
     public static string PLAYER_PREF_KEY_FISH_DENSITY = "SettingFishDensity";
     public static string PLAYER_PREF_KEY_LANGUAGE = "SettingLanguage";
+    public static string PLAYER_PREF_KEY_FISH_EAT_PERCENTAGE = "SettingFishEat";
 
     public static string LANGUAGE_PREF_ENGLISH = "en_US";
     public static string LANGUAGE_PREF_PORTUGUESE = "pt_PT";
@@ -39,6 +41,10 @@ public static class Settings
         {
             PlayerPrefs.SetFloat(PLAYER_PREF_KEY_FISH_DENSITY, DEFAULT_FISH_DENSITY);
             return DEFAULT_FISH_DENSITY;
+        } else if (key == PLAYER_PREF_KEY_FISH_EAT_PERCENTAGE)
+        {
+            PlayerPrefs.SetFloat(PLAYER_PREF_KEY_FISH_EAT_PERCENTAGE, DEFAULT_FISH_EAT_PERCENTAGE);
+            return DEFAULT_FISH_EAT_PERCENTAGE;
         }
 
         return 0.0f;

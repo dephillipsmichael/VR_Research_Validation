@@ -16,7 +16,7 @@ public class FlakeManager : Singleton<FlakeManager> {
     public GameObject flakePile2;
 
     public List<GameObject> flakeGameObjList = new List<GameObject>();
-    List<Flake> flakeList = new List<Flake>();
+    public List<Flake> flakeList = new List<Flake>();
 
     [SerializeField]
     public GameObject flakePrefab;
@@ -95,13 +95,12 @@ public class FlakeManager : Singleton<FlakeManager> {
     void CreateFlakes()
     {
         Debug.Log("Create Flakes");
-        flakeList.Clear();
         for (float t = 3.0f; t < durationInSeconds; t += 1.0f)
-        {          
+        {
             int pileIndex = random.Next(0, 3);
             int randomTime = random.Next(0, 3);
-            float startingAngle = (float)random.NextDouble();
-            float sideSway = random.Next(1, 4) * (0.25f / 4f);
+            float startingAngle = randomStartingAngle();
+            float sideSway = randomSidesway();
             Flake flake = new Flake((float)(t + (randomTime * 0.25)), pileIndex, startingAngle, sideSway);
             flakeList.Add(flake);
             Vector3 startingPos = GetFlakePile(pileIndex).transform.position;
@@ -114,7 +113,25 @@ public class FlakeManager : Singleton<FlakeManager> {
         }
     }
 
-    GameObject GetFlakePile(int atIndex)
+    public float randomStartingAngle()
+    {
+        if (random == null)
+        {
+            random = new System.Random();
+        }
+        return (float)random.NextDouble();
+    }
+
+    public float randomSidesway()
+    {
+        if (random == null)
+        {
+            random = new System.Random();
+        }
+        return random.Next(1, 4) * (0.25f / 4f);
+    }
+
+    public GameObject GetFlakePile(int atIndex)
     {
         if (atIndex == 0)
         {
@@ -133,6 +150,7 @@ public class FlakeManager : Singleton<FlakeManager> {
 
     public class Flake
     {
+        public float startingSidesway = 0;
         public float sidesway = 0;
         public float speedstartingSinAngle = 0;
         public float spawnTime;
@@ -145,6 +163,7 @@ public class FlakeManager : Singleton<FlakeManager> {
             this.pileIndex = pileIndex;
             this.speedstartingSinAngle = speedstartingSinAngle;
             this.sidesway = sidesway;
+            this.startingSidesway = sidesway;
         }
     }
 }

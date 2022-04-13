@@ -27,6 +27,11 @@ public class CanvasStateManagerSettings : Singleton<CanvasStateManagerSettings>
     TextMeshProUGUI FishDensityValueText;
 
     [SerializeField]
+    Slider FishEatFoodSlider;
+    [SerializeField]
+    TextMeshProUGUI FishEatFoodValueText;
+
+    [SerializeField]
     Toggle englishToggle;
     [SerializeField]
     Toggle portugueseToggle;
@@ -119,6 +124,10 @@ public class CanvasStateManagerSettings : Singleton<CanvasStateManagerSettings>
             FishDensityValueText.text = (int)fishDensity + " per minute";
             FishDensitySlider.value = fishDensity;
 
+            float fishEatFoodPercentage = Settings.getPlayerPref(Settings.PLAYER_PREF_KEY_FISH_EAT_PERCENTAGE);
+            FishEatFoodValueText.text = (int)fishEatFoodPercentage + "%";
+            FishEatFoodSlider.value = fishEatFoodPercentage;
+
             string langStr = Settings.getPlayerPref(Settings.PLAYER_PREF_KEY_LANGUAGE, Settings.LANGUAGE_PREF_ENGLISH);
             bool isEnglishSelected = (langStr == Settings.LANGUAGE_PREF_ENGLISH);
             englishToggle.isOn = isEnglishSelected;
@@ -180,6 +189,12 @@ public class CanvasStateManagerSettings : Singleton<CanvasStateManagerSettings>
     {
         Settings.setPlayerPref(Settings.PLAYER_PREF_KEY_FISH_DENSITY, val);
         FishDensityValueText.text = (int)val + " fish per minute";
+    }
+
+    public void onFishEatPercentageSliderChanged(float val)
+    {
+        Settings.setPlayerPref(Settings.PLAYER_PREF_KEY_FISH_EAT_PERCENTAGE, val);
+        FishEatFoodValueText.text = (int)val + "%";
     }
 
     public void onEnglishLanguageSelected(bool selected)

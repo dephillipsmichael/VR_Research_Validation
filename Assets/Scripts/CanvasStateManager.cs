@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class CanvasStateManager : Singleton<CanvasStateManager>
 {
-    private int index = 0;
+    public int index = 0;
 
-    private const int fishyTimeIdx = 5;
+    public int fishyTimeIdx = 5;
 
     private Vector3 startScale;
 

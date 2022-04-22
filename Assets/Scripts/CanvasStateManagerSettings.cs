@@ -158,7 +158,12 @@ public class CanvasStateManagerSettings : Singleton<CanvasStateManagerSettings>
         {
             if (Controller.UPvr_GetKeyLongPressed(0, Pvr_KeyCode.Y))
             {
-                openCanvas(0);
+                // Only allow the operator to change settings if
+                // they are on the first or second onboarding screen
+                if (CanvasStateManager.Instance.index <= 1)
+                {
+                    openCanvas(0);
+                }                
             }
         }        
     }

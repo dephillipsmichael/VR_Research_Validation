@@ -116,6 +116,28 @@ public class DataLogger : Singleton<DataLogger>
         eyesRaycastObj.SetActive(false);                
     }
 
+    public void saveSettingsToAnswersFile()
+    {
+        float duration = Settings.getPlayerPref(Settings.PLAYER_PREF_KEY_DURATION);
+        string durationText = (int)duration + " seconds";
+        setAnswer(Settings.PLAYER_PREF_KEY_DURATION, durationText);
+
+        float sharkTime = Settings.getPlayerPref(Settings.PLAYER_PREF_KEY_SHARK);
+        string sharkTimeText = (int)sharkTime + " seconds";
+        setAnswer(Settings.PLAYER_PREF_KEY_SHARK, sharkTimeText);
+
+        float fishDensity = Settings.getPlayerPref(Settings.PLAYER_PREF_KEY_FISH_DENSITY);
+        string fishDensityText = (int)fishDensity + " per minute";
+        setAnswer(Settings.PLAYER_PREF_KEY_FISH_DENSITY, fishDensityText);
+
+        float fishEatFoodPercentage = Settings.getPlayerPref(Settings.PLAYER_PREF_KEY_FISH_EAT_PERCENTAGE);
+        string fishEatFoodPercentageText = (int)fishEatFoodPercentage + "%";
+        setAnswer(Settings.PLAYER_PREF_KEY_FISH_EAT_PERCENTAGE, fishEatFoodPercentageText);
+
+        string langStr = Settings.getPlayerPref(Settings.PLAYER_PREF_KEY_LANGUAGE, Settings.LANGUAGE_PREF_ENGLISH);
+        setAnswer(Settings.PLAYER_PREF_KEY_LANGUAGE, langStr);
+    }
+
     public void saveDataToFile()
     {
         Debug.Log("Saving data to file");
@@ -125,6 +147,8 @@ public class DataLogger : Singleton<DataLogger>
         {
             zipId = "999999";
         }
+
+        saveSettingsToAnswersFile();
 
         string dirPath = createRootDirIfApplicable();
         using (var fs = File.Create(dirPath + "/Participant" + zipId + ".zip"))

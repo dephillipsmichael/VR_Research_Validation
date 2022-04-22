@@ -14,6 +14,7 @@ public static class Settings
     public static string PLAYER_PREF_KEY_FISH_DENSITY = "SettingFishDensity";
     public static string PLAYER_PREF_KEY_LANGUAGE = "SettingLanguage";
     public static string PLAYER_PREF_KEY_FISH_EAT_PERCENTAGE = "SettingFishEat";
+    public static string PLAYER_PREF_KEY_SHARK_OR_DOLPHIN = "SettingSharkOrDolphin";
 
     public static string LANGUAGE_PREF_ENGLISH = "en_US";
     public static string LANGUAGE_PREF_PORTUGUESE = "pt_PT";
@@ -41,7 +42,8 @@ public static class Settings
         {
             PlayerPrefs.SetFloat(PLAYER_PREF_KEY_FISH_DENSITY, DEFAULT_FISH_DENSITY);
             return DEFAULT_FISH_DENSITY;
-        } else if (key == PLAYER_PREF_KEY_FISH_EAT_PERCENTAGE)
+        }
+        else if (key == PLAYER_PREF_KEY_FISH_EAT_PERCENTAGE)
         {
             PlayerPrefs.SetFloat(PLAYER_PREF_KEY_FISH_EAT_PERCENTAGE, DEFAULT_FISH_EAT_PERCENTAGE);
             return DEFAULT_FISH_EAT_PERCENTAGE;

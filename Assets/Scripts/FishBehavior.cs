@@ -37,6 +37,9 @@ public class FishBehavior : Singleton<FishBehavior> {
     GameObject shark;
     Fish sharkFishObj;
 
+    GameObject dolphin;
+    Fish dolphinFishObj;
+
     float sharkTime = 15.0f;
 
     float startTime = 0.0f;
@@ -69,7 +72,7 @@ public class FishBehavior : Singleton<FishBehavior> {
         foodEaten = 0;
         CreateBlueFishList();
         CreateStripedFishList();
-        CreateSharkOrDolphin();
+        CreateSharkAndDolphin();
         FlakeManager.Instance.startFishin();
         DataLogger.Instance.logEventTimestamp("start", startTime);
     }
@@ -231,6 +234,12 @@ public class FishBehavior : Singleton<FishBehavior> {
         {
             UpdateFish(sharkFishObj, shark, timeOffset);
         }
+
+        if (dolphinFishObj != null &&
+            timeOffset > dolphinFishObj.spawnTime)
+        {
+            UpdateFish(dolphinFishObj, dolphin, timeOffset);
+        }
     }
 
     void UpdateFish(Fish fish, GameObject fishObj, float timeOffset)
@@ -274,7 +283,7 @@ public class FishBehavior : Singleton<FishBehavior> {
                 fishObj.transform.rotation *= Quaternion.AngleAxis(90, transform.up);
             }            
 
-            if (!fish.hasFood && fish.name != SHARK_NAME && fish.shouldEatFood)
+            if (!fish.hasFood && fish.name != SHARK_NAME && fish.name != DOLPHIN_NAME && fish.shouldEatFood)
             {
                 for (int i = 0; i < FlakeManager.Instance.flakeGameObjList.Count; i++)
                 {
@@ -390,10 +399,13 @@ public class FishBehavior : Singleton<FishBehavior> {
         }
     }
 
-    void CreateSharkOrDolphin()
+    void CreateSharkAndDolphin()
     {
-        Debug.Log("Create Shark/Dolphin");        
+        Debug.Log("Create Shark and Dolphin");
+
+        // Create Shark        
         float sharkTimeRandom = sharkTime + UnityEngine.Random.Range(-5.0f, 5.0f);
+
         sharkFishObj = new Fish(sharkTimeRandom, randomPathIdx(), false);
         Vector3 startingPos = availablePathList[sharkFishObj.availablePathIdx].path[0];
         sharkFishObj.rotationCorrection = false;
@@ -404,8 +416,28 @@ public class FishBehavior : Singleton<FishBehavior> {
         shark.name = sharkFishObj.name;
         shark.SetActive(false);
         shark.transform.Find("Flake").gameObject.SetActive(false);
+
+        // Create Dolphin
+        float randomInterval = UnityEngine.Random.Range(1.0f, 5.0f);
+        // 50% chance of dolphin appearing before the shark
+        if ((int)UnityEngine.Random.Range(0, 2) == 0)
+        {
+            randomInterval = -randomInterval;
+        }
+        float dolphinTimeRandom = sharkTimeRandom + randomInterval;
+
+        dolphinFishObj = new Fish(dolphinTimeRandom, randomPathIdx(), false);
+        Vector3 startingPosDolphin = availablePathList[dolphinFishObj.availablePathIdx].path[0];
+        dolphinFishObj.rotationCorrection = false;
+
+        dolphin = Instantiate(dolphinPrefab, startingPosDolphin, new Quaternion(0, 0, 0, 0));
+
+        dolphinFishObj.name = DOLPHIN_NAME;
+        dolphin.name = dolphinFishObj.name;
+        dolphin.SetActive(false);
     }   
 
+    
     public class Fish
     {
         public int availablePathIdx;

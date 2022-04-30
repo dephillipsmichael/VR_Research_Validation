@@ -2,7 +2,7 @@
   "en_US": [
     {
       "key": "participant_id_title",
-      "value": "Enter your participant ID:"
+      "value": "Enter your Participant ID:"
     },
     {
       "key": "blue_fish_title",
@@ -26,11 +26,15 @@
     },
     {
       "key": "octopus_question_title",
-      "value": "Did you see an octopus?"
+      "value": "During the experiment, did some octopus appear?"
     },
     {
       "key": "shark_question_title",
-      "value": "Did you see a shark?"
+      "value": "During the experiment, did some shark appear?"
+    },
+    {
+      "key": "dolphin_question_title",
+      "value": "During the experiment, did some dolphin appear?"
     },
     {
       "key": "continue",
@@ -80,11 +84,15 @@
     },
     {
       "key": "octopus_question_title",
-      "value": "Durante a experiência, viu um polvo?"
+      "value": "Durante a experiência, apareceu algum polvo?"
     },
     {
       "key": "shark_question_title",
-      "value": "Durante a experiência, viu um tubarão?"
+      "value": "Durante a experiência, apareceu algum tubarão?"
+    },
+    {
+      "key": "dolphin_question_title",
+      "value": "Durante a experiência, apareceu algum golfinho?"
     },
     {
       "key": "continue",

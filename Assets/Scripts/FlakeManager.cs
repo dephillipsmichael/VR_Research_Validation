@@ -39,7 +39,7 @@ public class FlakeManager : Singleton<FlakeManager> {
         isDoneFishing = false;
         random = new System.Random();
         startTime = Time.time;
-        //CreateFlakes();
+        CreateFlakes();
     }
 
     void Update() {

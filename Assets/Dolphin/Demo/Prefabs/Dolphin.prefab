@@ -40,10 +40,7 @@ GameObject:
   m_Component:
   - component: {fileID: 492948}
   - component: {fileID: 9597132}
-  - component: {fileID: 5400300}
-  - component: {fileID: 13695088}
-  - component: {fileID: 11447032}
-  - component: {fileID: 11483198}
+  - component: {fileID: 1062323239}
   m_Layer: 0
   m_Name: Dolphin
   m_TagString: Untagged
@@ -60,7 +57,7 @@ Transform:
   m_GameObject: {fileID: 106610}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 3.1725395, y: 0.5, z: -6.315832}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1.06, z: 0.74}
   m_Children:
   - {fileID: 405980}
   - {fileID: 438182}
@@ -86,24 +83,8 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!54 &5400300
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 106610}
-  serializedVersion: 2
-  m_Mass: 1000
-  m_Drag: 0.1
-  m_AngularDrag: 1
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
---- !u!136 &13695088
-CapsuleCollider:
+--- !u!65 &1062323239
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -112,43 +93,9 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.2
-  m_Height: 2
-  m_Direction: 2
-  m_Center: {x: 0, y: 0.21, z: -0.16}
---- !u!114 &11447032
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 106610}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94c36c13919bfe041889b32b536b8d01, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isLived: 1
-  forwardSpeed: 1
-  turnSpeed: 0.3
-  upDownSpeed: 0
-  rollSpeed: 0
-  maxForwardSpeed: 1
-  maxTurnSpeed: 150
-  maxUpDownSpeed: 150
-  maxRollSpeed: 100
---- !u!114 &11483198
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 106610}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1210216db58b15458ad59850611c34a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  serializedVersion: 2
+  m_Size: {x: 0.71, y: 1.53, z: 4.5}
+  m_Center: {x: 0, y: 0, z: -0.24}
 --- !u!1 &106888
 GameObject:
   m_ObjectHideFlags: 0
@@ -514,7 +461,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 127960}
-  m_LocalRotation: {x: -0.5836037, y: 0.65508807, z: 0.33092004, w: -0.34750316}
+  m_LocalRotation: {x: -0.5836036, y: 0.655088, z: 0.33092, w: -0.34750313}
   m_LocalPosition: {x: 0.01509995, y: -0.012151099, z: 0.11822453}
   m_LocalScale: {x: 1.0000001, y: 1, z: 0.99999994}
   m_Children: []

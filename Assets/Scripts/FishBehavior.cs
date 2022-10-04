@@ -58,8 +58,6 @@ public class FishBehavior : Singleton<FishBehavior> {
 
     void Start() {
         CreateAvailableFishPaths();
-        random = new System.Random();
-        testFishListCreation();
     }
 
     public void startFishin()
@@ -354,38 +352,6 @@ public class FishBehavior : Singleton<FishBehavior> {
         fishObj.SetActive(false);
         fishObj.transform.Find("Flake").gameObject.SetActive(false);
         fishGameObjectListToAddTo.Add(fishObj);
-    }
-
-    public void testFishListCreation()
-    {
-        List<Dictionary<float, bool>> list = new List<Dictionary<float, bool>>();
-        for (int i = 0;  i < 10; i ++)
-        {
-            list.Add(createFishList(2f));
-        }
-
-        Debug.Log("Testing create fish function");
-        for (int k = 0; k < 10; k++)
-        {
-            Dictionary<float, bool> kList = list[k];            
-            string logKListKeys = "";
-            string logKListValues = "";
-            foreach (var pair in kList)
-            {
-                logKListKeys += pair.Key + ", ";
-                logKListValues += pair.Value + ", ";
-            }
-            Debug.Log("Testing Keys " + logKListKeys);
-            Debug.Log("Testing Values " + logKListValues);
-            for (int j = 0; j < 10; j++)
-            {                
-                Dictionary<float, bool> jList = list[j];
-                if (kList.Count != jList.Count)
-                {
-                    Debug.Log("COUNTS ARE DIFFF ERRRROR");
-                }
-            }
-        }
     }
 
     // Returns a dictionary of fish start times, and value of if they eat food or not

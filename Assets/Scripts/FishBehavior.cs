@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 public class FishBehavior : Singleton<FishBehavior> {
@@ -57,6 +58,8 @@ public class FishBehavior : Singleton<FishBehavior> {
 
     void Start() {
         CreateAvailableFishPaths();
+        random = new System.Random();
+        testFishListCreation();
     }
 
     public void startFishin()
@@ -353,26 +356,106 @@ public class FishBehavior : Singleton<FishBehavior> {
         fishGameObjectListToAddTo.Add(fishObj);
     }
 
+    public void testFishListCreation()
+    {
+        List<Dictionary<float, bool>> list = new List<Dictionary<float, bool>>();
+        for (int i = 0;  i < 10; i ++)
+        {
+            list.Add(createFishList(2f));
+        }
+
+        Debug.Log("Testing create fish function");
+        for (int k = 0; k < 10; k++)
+        {
+            Dictionary<float, bool> kList = list[k];            
+            string logKListKeys = "";
+            string logKListValues = "";
+            foreach (var pair in kList)
+            {
+                logKListKeys += pair.Key + ", ";
+                logKListValues += pair.Value + ", ";
+            }
+            Debug.Log("Testing Keys " + logKListKeys);
+            Debug.Log("Testing Values " + logKListValues);
+            for (int j = 0; j < 10; j++)
+            {                
+                Dictionary<float, bool> jList = list[j];
+                if (kList.Count != jList.Count)
+                {
+                    Debug.Log("COUNTS ARE DIFFF ERRRROR");
+                }
+            }
+        }
+    }
+
+    // Returns a dictionary of fish start times, and value of if they eat food or not
+    Dictionary<float, bool> createFishList(float startTime)
+    {
+        Dictionary<float, bool> fishDict = new Dictionary<float, bool>();        
+
+        float time = startTime;
+        float fishPerSecond = fishPerMinute / 60.0f;
+        while (time < durationInSeconds)
+        {
+            // Add all the times with no food eater status
+            fishDict.Add(time, false);
+            time = time + (1.0f / fishPerSecond) + (0.2f * (1.0f / fishPerSecond));
+        }
+
+        // The requirement is to have the same number of fish total and same number of fish that eat food
+        // However, we want their paths, and which fish actually eat the food to be random
+        // To accomplish this, only randomize (shuffle) the status of if a fish is a food eater or not
+        float percentageOfFoodEaters = Settings.getPlayerPref(Settings.PLAYER_PREF_KEY_FISH_EAT_PERCENTAGE);
+        int fishCount = fishDict.Keys.Count;
+        int numberOfFishEatingFood = (int)((percentageOfFoodEaters / 100f) * fishCount);
+        List<bool> foodEaterStatusList = new List<bool>();
+        for (int fishIdx = 0; fishIdx < fishCount; fishIdx++)
+        {
+            foodEaterStatusList.Add(fishIdx < numberOfFishEatingFood);
+        }
+
+        ShuffleList(foodEaterStatusList);
+
+        int i = 0;
+        float[] keys = fishDict.Keys.ToArray();
+        foreach(float key in keys)
+        {
+            fishDict[key] = foodEaterStatusList[i];
+            i++;
+        }
+
+        return fishDict;
+    }
+    private void ShuffleList(List<bool> list)
+    {
+        int n = list.Count;
+        while (n > 1)
+        {
+            n--;
+            int k = random.Next(n + 1);
+            bool value = list[k];
+            list[k] = list[n];
+            list[n] = value;
+        }
+    }
+
     void CreateBlueFishList()
     {
         Debug.Log("CreateBlueFish");
         blueFishList.Clear();
 
-        // 0 to 100
-        float percentageOfFoodEaters = Settings.getPlayerPref(Settings.PLAYER_PREF_KEY_FISH_EAT_PERCENTAGE);
-
-        float time = 2f;
-        float fishPerSecond = fishPerMinute / 60.0f;
-        while (time < durationInSeconds)
-        {                   
-            if (random.Next(100) < percentageOfFoodEaters)
+        // Start blue fish 1 second before the striped fish start
+        Dictionary<float, bool> fishDict = createFishList(2f);
+        foreach(float startTime in fishDict.Keys)
+        {
+            if (fishDict[startTime])
             {
-                CreateFoodEater(FISH2_NAME, bluePrefab, blueFishList, blueObjList, time);
-            } else
-            {
-                CreateNonFoodEater(FISH2_NAME, bluePrefab, blueFishList, blueObjList, time);
+                CreateFoodEater(FISH2_NAME, bluePrefab, blueFishList, blueObjList, startTime);
             }
-            time = time + (1.0f / fishPerSecond) + (0.2f * (1.0f / fishPerSecond));
+            else
+            {
+                CreateNonFoodEater(FISH2_NAME, bluePrefab, blueFishList, blueObjList, startTime);
+            }
         }
     }
 
@@ -381,21 +464,18 @@ public class FishBehavior : Singleton<FishBehavior> {
         Debug.Log("CreateStripedFish");
         stripedFishList.Clear();
 
-        // 0 to 100
-        float percentageOfFoodEaters = Settings.getPlayerPref(Settings.PLAYER_PREF_KEY_FISH_EAT_PERCENTAGE);
-
-        float time = 3f;
-        float fishPerSecond = fishPerMinute / 60.0f;
-        while (time < durationInSeconds)
+        // Start striped fish 1 second after the blue fish start
+        Dictionary<float, bool> fishDict = createFishList(3f);
+        foreach (float startTime in fishDict.Keys)
         {
-            if(random.Next(100) < percentageOfFoodEaters)
+            if (fishDict[startTime])
             {
-                CreateFoodEater(FISH1_NAME, stripedPrefab, stripedFishList, stripedObjList, time);
-            } else
-            {
-                CreateNonFoodEater(FISH1_NAME, stripedPrefab, stripedFishList, stripedObjList, time);
+                CreateFoodEater(FISH1_NAME, stripedPrefab, stripedFishList, stripedObjList, startTime);
             }
-            time = time + (1.0f / fishPerSecond) + (0.2f * (1.0f / fishPerSecond));
+            else
+            {
+                CreateNonFoodEater(FISH1_NAME, stripedPrefab, stripedFishList, stripedObjList, startTime);
+            }
         }
     }
 
@@ -403,9 +483,18 @@ public class FishBehavior : Singleton<FishBehavior> {
     {
         Debug.Log("Create Shark and Dolphin");
 
-        // Create Shark        
+        // Create Shark start time       
         float sharkTimeRandom = sharkTime + UnityEngine.Random.Range(-5.0f, 5.0f);
+        // Create dolphin start time
+        float randomInterval = UnityEngine.Random.Range(1.0f, 5.0f);
+        // 50% chance of dolphin appearing before the shark
+        if ((int)UnityEngine.Random.Range(0, 2) == 0)
+        {
+            randomInterval = -randomInterval;
+        }
+        float dolphinTimeRandom = sharkTimeRandom + randomInterval;
 
+        // Create Shark obj
         sharkFishObj = new Fish(sharkTimeRandom, randomPathIdx(), false);
         Vector3 startingPos = availablePathList[sharkFishObj.availablePathIdx].path[0];
         sharkFishObj.rotationCorrection = false;
@@ -417,15 +506,7 @@ public class FishBehavior : Singleton<FishBehavior> {
         shark.SetActive(false);
         shark.transform.Find("Flake").gameObject.SetActive(false);
 
-        // Create Dolphin
-        float randomInterval = UnityEngine.Random.Range(1.0f, 5.0f);
-        // 50% chance of dolphin appearing before the shark
-        if ((int)UnityEngine.Random.Range(0, 2) == 0)
-        {
-            randomInterval = -randomInterval;
-        }
-        float dolphinTimeRandom = sharkTimeRandom + randomInterval;
-
+        // Create dolphin obj
         dolphinFishObj = new Fish(dolphinTimeRandom, randomPathIdx(), false);
         Vector3 startingPosDolphin = availablePathList[dolphinFishObj.availablePathIdx].path[0];
         dolphinFishObj.rotationCorrection = false;

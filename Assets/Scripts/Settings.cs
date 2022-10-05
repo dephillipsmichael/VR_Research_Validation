@@ -15,9 +15,14 @@ public static class Settings
     public static string PLAYER_PREF_KEY_LANGUAGE = "SettingLanguage";
     public static string PLAYER_PREF_KEY_FISH_EAT_PERCENTAGE = "SettingFishEat";
     public static string PLAYER_PREF_KEY_SHARK_OR_DOLPHIN = "SettingSharkOrDolphin";
+    public static string PLAYER_PREF_KEY_SHARK_ORDER = "SettingSharkOrder";
 
     public static string LANGUAGE_PREF_ENGLISH = "en_US";
     public static string LANGUAGE_PREF_PORTUGUESE = "pt_PT";
+
+    public static string SHARK_ORDER_SHARK_FIRST = "Shark first";
+    public static string SHARK_ORDER_DOLPHIN_FIRST = "Dolphin first";
+    public static string SHARK_ORDER_RANDOM = "Random";
 
     public static List<LocalizedKeyValue> localizationList = null;
 
@@ -61,6 +66,10 @@ public static class Settings
         else if (key == PLAYER_PREF_KEY_LANGUAGE)
         {
             return LANGUAGE_PREF_ENGLISH;
+        }
+        else if (key == PLAYER_PREF_KEY_SHARK_ORDER)
+        {
+            return SHARK_ORDER_SHARK_FIRST;
         }
 
         return "";

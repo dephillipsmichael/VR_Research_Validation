@@ -21,6 +21,7 @@ public class DataLogger : Singleton<DataLogger>
     public EyesAndHeadData eyesAndHeadData = new EyesAndHeadData();
     public FishAndSharkResultDataList fishPositionData = new FishAndSharkResultDataList();
     public EventTimestampDataList eventList = new EventTimestampDataList();
+    public List<string> screenshotFileNameList = new List<string>();    
 
     private bool isTracking = false;
 
@@ -183,6 +184,14 @@ public class DataLogger : Singleton<DataLogger>
                 JsonUtility.ToJson(eyesAndHeadData));
             outStream.PutNextEntry(new ZipEntry("EyesAndHead.json"));
             outStream.Write(eyesAndHeadJson, 0, eyesAndHeadJson.Length);
+
+            // Write screenshot data
+            /*foreach (string filename in screenshotFileNameList)
+            {
+                byte[] fileBytes = File.ReadAllBytes(Path.Combine(dirPath, filename));
+                outStream.PutNextEntry(new ZipEntry(filename));
+                outStream.Write(fileBytes, 0, fileBytes.Length);
+            } */          
         }      
 
         gazetAt.data.Clear();
@@ -190,6 +199,23 @@ public class DataLogger : Singleton<DataLogger>
         answers.data.Clear();
         eventList.eventList.Clear();
         fishPositionData.dataList.Clear();
+        
+        //foreach (string filename in screenshotFileNameList)
+        //{
+            //File.Delete(Path.Combine(dirPath, filename));
+        //}
+        //screenshotFileNameList.Clear();
+    }
+
+    public void takeScreenshot(string fileIdentifier)
+    {
+        string dirPath = createRootDirIfApplicable();
+        string screenshotName = fileIdentifier + ".png";
+        ScreenCapture.CaptureScreenshot(Path.Combine(dirPath, screenshotName), 1);
+        screenshotFileNameList.Add(screenshotName);
+        // takes the sceenshot, the "2" is for the scaled resolution,
+        // you can put this to 600 but it will take really long to scale the image up
+        Debug.Log(dirPath + screenshotName); // You get instant feedback in the console
     }
 
     private byte[] createAnswersCsv(QuestionData answers)

@@ -36,6 +36,13 @@ public class CanvasStateManagerSettings : Singleton<CanvasStateManagerSettings>
     [SerializeField]
     Toggle portugueseToggle;
 
+    [SerializeField]
+    Toggle sharkToggle;
+    [SerializeField]
+    Toggle dolphinToggle;
+    [SerializeField]
+    Toggle randomOrderToggle;
+
     protected override void Awake()
     {
         base.Awake();
@@ -132,6 +139,11 @@ public class CanvasStateManagerSettings : Singleton<CanvasStateManagerSettings>
             bool isEnglishSelected = (langStr == Settings.LANGUAGE_PREF_ENGLISH);
             englishToggle.isOn = isEnglishSelected;
             portugueseToggle.isOn = !isEnglishSelected;
+
+            string sharkOrderStr = Settings.getPlayerPref(Settings.PLAYER_PREF_KEY_SHARK_ORDER, Settings.SHARK_ORDER_SHARK_FIRST);
+            sharkToggle.isOn = sharkOrderStr == Settings.SHARK_ORDER_SHARK_FIRST;
+            dolphinToggle.isOn = sharkOrderStr == Settings.SHARK_ORDER_DOLPHIN_FIRST;
+            randomOrderToggle.isOn = sharkOrderStr == Settings.SHARK_ORDER_RANDOM;
         }
     }
 
@@ -221,6 +233,33 @@ public class CanvasStateManagerSettings : Singleton<CanvasStateManagerSettings>
             Settings.setPlayerPref(Settings.PLAYER_PREF_KEY_LANGUAGE, Settings.LANGUAGE_PREF_PORTUGUESE);
             Settings.reloadLocalization();
             CanvasStateManager.Instance.refreshCurrentCanvas();
+        }
+    }
+
+    public void onSharkOrderSharkFirstSelected(bool selected)
+    {
+        Debug.Log("onSharkOrderSharkFirstSelected " + selected);
+        if (selected)
+        {
+            Settings.setPlayerPref(Settings.PLAYER_PREF_KEY_SHARK_ORDER, Settings.SHARK_ORDER_SHARK_FIRST);            
+        }
+    }
+
+    public void onSharkOrderDolphinFirstSelected(bool selected)
+    {
+        Debug.Log("onSharkOrderDolphinFirstSelected " + selected);
+        if (selected)
+        {
+            Settings.setPlayerPref(Settings.PLAYER_PREF_KEY_SHARK_ORDER, Settings.SHARK_ORDER_DOLPHIN_FIRST);
+        }
+    }
+
+    public void onSharkOrderRandomSelected(bool selected)
+    {
+        Debug.Log("onSharkOrderRandomSelected " + selected);
+        if (selected)
+        {
+            Settings.setPlayerPref(Settings.PLAYER_PREF_KEY_SHARK_ORDER, Settings.SHARK_ORDER_RANDOM);
         }
     }
 }

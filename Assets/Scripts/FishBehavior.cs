@@ -42,6 +42,7 @@ public class FishBehavior : Singleton<FishBehavior> {
     Fish dolphinFishObj;
 
     float sharkTime = 15.0f;
+    string sharkOrderStr = Settings.SHARK_ORDER_SHARK_FIRST;
 
     float startTime = 0.0f;
     float startOffset = 0.0f;
@@ -65,6 +66,7 @@ public class FishBehavior : Singleton<FishBehavior> {
         durationInSeconds = Settings.getPlayerPref(Settings.PLAYER_PREF_KEY_DURATION);
         sharkTime = Settings.getPlayerPref(Settings.PLAYER_PREF_KEY_SHARK);
         fishPerMinute = Settings.getPlayerPref(Settings.PLAYER_PREF_KEY_FISH_DENSITY);
+        sharkOrderStr = Settings.getPlayerPref(Settings.PLAYER_PREF_KEY_SHARK_ORDER, sharkOrderStr);
         hasStartedFishing = true;
         isDoneFishing = false;
         random = new System.Random();
@@ -193,7 +195,6 @@ public class FishBehavior : Singleton<FishBehavior> {
             DataLogger.Instance.logEventTimestamp("end", Time.time);
             CanvasStateManager.Instance.fishyTimeOver();
             isDoneFishing = true;
-
                         
             String json = JsonUtility.ToJson(foodEatenComboList);
             Debug.Log(json);
@@ -282,8 +283,41 @@ public class FishBehavior : Singleton<FishBehavior> {
             if (fish.rotationCorrection) 
             {
                 fishObj.transform.rotation *= Quaternion.AngleAxis(90, transform.up);
-            }            
+            }
 
+            /* Save shark and dolphin screenshots
+            if (fish.name == SHARK_NAME || fish.name == DOLPHIN_NAME)
+            {
+                float pile01Mid = (FlakeManager.Instance.GetFlakePile(0).transform.position.x +
+                    FlakeManager.Instance.GetFlakePile(1).transform.position.x) * 0.5f;
+                float pile12Mid = (FlakeManager.Instance.GetFlakePile(1).transform.position.x +
+                    FlakeManager.Instance.GetFlakePile(2).transform.position.x) * 0.5f;
+                for (int i = 0; i < FlakeManager.Instance.flakeGameObjList.Count; i++)
+                {
+                    GameObject flake = FlakeManager.Instance.flakeGameObjList[i];
+                    float distanceToFood = Vector3.Distance(flake.transform.position, fishObj.transform.position);
+                    if (distanceToFood < 0.5f)
+                    {
+                        int pileIdx = 0;
+                        float fishX = fishObj.transform.position.x;
+                        if (fishX > pile01Mid && fishX < pile12Mid)
+                        {
+                            pileIdx = 1;
+                        }
+                        else if (fishX > pile12Mid)
+                        {
+                            pileIdx = 2;
+                        }
+                        string fileId = fish.name + i;
+                        if (!DataLogger.Instance.screenshotFileNameList.Contains(fileId))
+                        {
+                            DataLogger.Instance.takeScreenshot(fish.name + i);
+                        }
+                    }
+                }
+            }*/
+
+            // Check for the fish eating food
             if (!fish.hasFood && fish.name != SHARK_NAME && fish.name != DOLPHIN_NAME && fish.shouldEatFood)
             {
                 for (int i = 0; i < FlakeManager.Instance.flakeGameObjList.Count; i++)
@@ -448,17 +482,33 @@ public class FishBehavior : Singleton<FishBehavior> {
     void CreateSharkAndDolphin()
     {
         Debug.Log("Create Shark and Dolphin");
+        
+        float dolphinTimeRandom = 0f;
 
         // Create Shark start time       
         float sharkTimeRandom = sharkTime + UnityEngine.Random.Range(-5.0f, 5.0f);
-        // Create dolphin start time
-        float randomInterval = UnityEngine.Random.Range(1.0f, 5.0f);
-        // 50% chance of dolphin appearing before the shark
-        if ((int)UnityEngine.Random.Range(0, 2) == 0)
+
+        // Create the time offset from dolphin to shark
+        float randomDolphinInterval = UnityEngine.Random.Range(1.0f, 5.0f);
+
+        // Check when the dolphin should go
+        if (sharkOrderStr == Settings.SHARK_ORDER_RANDOM)
+        {                        
+            // 50% chance of dolphin appearing before the shark
+            if ((int)UnityEngine.Random.Range(0, 2) == 0)
+            {
+                randomDolphinInterval = -randomDolphinInterval;
+            }
+            dolphinTimeRandom = sharkTimeRandom + randomDolphinInterval;
+        } 
+        else if (sharkOrderStr == Settings.SHARK_ORDER_SHARK_FIRST)
         {
-            randomInterval = -randomInterval;
-        }
-        float dolphinTimeRandom = sharkTimeRandom + randomInterval;
+            dolphinTimeRandom = sharkTimeRandom + randomDolphinInterval;
+        } 
+        else  // dolphin first
+        {
+            dolphinTimeRandom = sharkTimeRandom - randomDolphinInterval;
+        }       
 
         // Create Shark obj
         sharkFishObj = new Fish(sharkTimeRandom, randomPathIdx(), false);

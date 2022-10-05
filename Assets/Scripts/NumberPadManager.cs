@@ -12,7 +12,7 @@ public class NumberPadManager : MonoBehaviour
     [SerializeField]
     private Button continueButton;
 
-    public int maxCharacters = 2;
+    public int maxCharacters = 3;
 
     public void buttonPressed(string name)
     {

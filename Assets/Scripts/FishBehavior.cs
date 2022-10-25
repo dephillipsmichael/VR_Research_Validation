@@ -324,7 +324,7 @@ public class FishBehavior : Singleton<FishBehavior> {
                 {
                     GameObject flake = FlakeManager.Instance.flakeGameObjList[i];
                     float distanceToFood = Vector3.Distance(flake.transform.position, fishObj.transform.position);
-                    if (distanceToFood < 0.5f)
+                    if (distanceToFood < 1.0f)
                     {
                         Debug.Log("Fish got food");
                         fish.hasFood = true;

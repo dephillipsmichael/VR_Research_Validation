@@ -84,6 +84,18 @@ public class DataLogger : Singleton<DataLogger>
         }
     }
 
+    public string getAnswer(string identifier)
+    {
+        foreach(QuestionData.Answer answer in answers.data)
+        {
+            if (answer.identifier == identifier)
+            {
+                return answer.value;
+            }
+        }
+        return null;
+    }
+
     public void logEventTimestamp(String eventName, float timestamp) 
     {
         EventTimestampDataList.EventTimestampData data = new EventTimestampDataList.EventTimestampData();

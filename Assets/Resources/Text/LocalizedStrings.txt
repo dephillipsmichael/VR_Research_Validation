@@ -55,6 +55,22 @@
     {
       "key": "yes",
       "value": "Yes"
+    },
+    {
+      "key": "shark_distance_title",
+      "value": "What was your impression of how close or distant the shark was by moving the marker to the position that best represents your impression:"
+    },
+    {
+      "key": "dolphin_distance_title",
+      "value": "What was your impression of how close or distant the dolphin was by moving the marker to the position that best represents your impression:"
+    },
+    {
+      "key": "very_distant",
+      "value": "Very distant"
+    },
+    {
+      "key": "very_close",
+      "value": "Very Close"
     }
   ],
   "pt_PT": [
@@ -113,6 +129,22 @@
     {
       "key": "yes",
       "value": "Sim"
+    },
+    {
+      "key": "shark_distance_title",
+      "value": "Quão próximo ou distante lhe pareceu que o tubarão estava? Responda movendo o marcador para a posição que melhor define a sua resposta."
+    },
+    {
+      "key": "dolphin_distance_title",
+      "value": "Quão próximo ou distante lhe pareceu que o golfinho estava? Responda movendo o marcador para a posição que melhor define a sua resposta."
+    },
+    {
+      "key": "very_distant",
+      "value": "Muito distante"
+    },
+    {
+      "key": "very_close",
+      "value": "Muito próximo"
     }
   ]
 }

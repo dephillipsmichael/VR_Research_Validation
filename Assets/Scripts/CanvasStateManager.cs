@@ -14,13 +14,30 @@ public class CanvasStateManager : Singleton<CanvasStateManager>
 
     private System.Random rng = new System.Random();
 
-   // Start is called before the first frame update
+    [SerializeField]
+    private UnityEngine.UI.Slider sharkDistanceSlider;
+
+    [SerializeField]
+    private UnityEngine.UI.Slider dolphinDistanceSlider;
+
+    private static string ANSWER_YES = "yes";
+    private static string ANSWER_NO = "no";
+
+    private static string QUESTION_SHARK = "Shark";
+    private static string QUESTION_DOLPHIN = "Dolphin";
+
+    // Start is called before the first frame update
     void Start()
     {
         // Randomly re-order the questions for Shark/Dolphin/Ocotopus
         // Last 3 questions should be randomly ordered, so use mapping
         ScreenFade[] screens = transform.GetComponentsInChildren<ScreenFade>();
-        int count = screens.Length;
+        int screenCount = screens.Length;
+
+        // Now that there are 2 optional questions at the end,
+        // remove these before running the random algorithm
+        // and then add them back in at the end
+        int count = screenCount - 2;
 
         List<int> lastThreeQuestionsOrder = new List<int>();
         lastThreeQuestionsOrder.Add(count - 3);
@@ -54,6 +71,10 @@ public class CanvasStateManager : Singleton<CanvasStateManager>
             }
         }
 
+        // Add the last 2 optional questions in after the random algo is done
+        iterableCanvasIndexList.Add(screenCount - 2);
+        iterableCanvasIndexList.Add(screenCount - 1);
+
         // Save the order displayed to the settings file
         for (int i = 0; i < iterableCanvasIndexList.Count; i++)
         {
@@ -79,6 +100,16 @@ public class CanvasStateManager : Singleton<CanvasStateManager>
         return iterableCanvasIndexList.Count;
     }
 
+    private int sharkDistanceQIdx()
+    {
+        return canvasCount() - 2;
+    }
+
+    private int dolphinDistanceQIdx()
+    {
+        return canvasCount() - 1;
+    }
+
     public void moveForward()
     {
         moveForward(null);
@@ -95,14 +126,28 @@ public class CanvasStateManager : Singleton<CanvasStateManager>
             }
         }
 
-        if ((index + 1) >= canvasCount())
+        index++;
+
+        if (index == sharkDistanceQIdx() && 
+            DataLogger.Instance.getAnswer(QUESTION_SHARK) != ANSWER_YES)
+        {
+            index++; // Skip shark distance question if they did not answer yes to seeing it
+        }
+
+        if (index == dolphinDistanceQIdx() &&
+            DataLogger.Instance.getAnswer(QUESTION_DOLPHIN) != ANSWER_YES)
+        {
+            index++; // Skip dolphin distance question if they did not answer yes to seeing it
+        }
+
+        if (index >= canvasCount())
         {
             // End of the line
             closeAllCanvas();
             DataLogger.Instance.saveDataToFile();
             return;
         }
-        index++;
+
         openCanvas(index);
 
         if (index == fishyTimeIdx)
@@ -194,11 +239,21 @@ public class CanvasStateManager : Singleton<CanvasStateManager>
 
     public void noButtonClicked()
     {
-        CanvasStateManager.Instance.moveForward("no");
+        CanvasStateManager.Instance.moveForward(ANSWER_NO);
     }
 
     public void yesButtonClicked()
     {
-        CanvasStateManager.Instance.moveForward("yes");
+        CanvasStateManager.Instance.moveForward(ANSWER_YES);
+    }
+
+    public void dolphinDistanceContinueClicked()
+    {
+        CanvasStateManager.Instance.moveForward(dolphinDistanceSlider.value.ToString());
+    }
+
+    public void sharkDistanceContinueClicked()
+    {
+        CanvasStateManager.Instance.moveForward(sharkDistanceSlider.value.ToString());
     }
 }

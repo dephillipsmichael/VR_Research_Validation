@@ -15,7 +15,7 @@
     {
       "key": "food_title",
       "value": "The fish will grab the food by taking it and swimming away."
-    },
+    },    
     {
       "key": "challenge_title",
       "value": "Your goal is to determine how many BLUE fish grab the food. Are you ready?"
@@ -43,6 +43,14 @@
     {
       "key": "i_understand",
       "value": "I understand"
+    },
+    {
+      "key": "control_title",
+      "value": "In the following, you will see an underwater scenario about which we'll ask you a few questions after it's finished. The scenario will last a few minutes."
+    },
+    {
+      "key": "are_you_ready",
+      "value": "Are you ready?"
     },
     {
       "key": "yes_ready",
@@ -117,6 +125,14 @@
     {
       "key": "i_understand",
       "value": "Sim, entendi"
+    },
+    {
+      "key": "control_title",
+      "value": "De seguida, irá observar um cenário subaquático, relativamente ao qual lhe serão colocadas algumas questões, no final. O cenário será apresentado durante alguns minutos."
+    },
+    {
+      "key": "are_you_ready",
+      "value": "Está preparad@?"
     },
     {
       "key": "yes_ready",

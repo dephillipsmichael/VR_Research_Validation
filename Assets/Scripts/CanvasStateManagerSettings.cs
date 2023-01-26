@@ -9,6 +9,10 @@ public class CanvasStateManagerSettings : Singleton<CanvasStateManagerSettings>
 {
     private int index = 0;
 
+    // When Unity loads up the UI, toggle groups fire off default events which can override settings
+    // to prevent this, ignore these events until the default settings are loaded
+    private bool hasLoadedDefaultValues = false;
+
     private Vector3 startScale;
 
     [SerializeField]
@@ -144,6 +148,8 @@ public class CanvasStateManagerSettings : Singleton<CanvasStateManagerSettings>
             sharkToggle.isOn = sharkOrderStr == Settings.SHARK_ORDER_SHARK_FIRST;
             dolphinToggle.isOn = sharkOrderStr == Settings.SHARK_ORDER_DOLPHIN_FIRST;
             randomOrderToggle.isOn = sharkOrderStr == Settings.SHARK_ORDER_RANDOM;
+
+            hasLoadedDefaultValues = true;
         }
     }
 
@@ -192,30 +198,50 @@ public class CanvasStateManagerSettings : Singleton<CanvasStateManagerSettings>
 
     public void onDurationSliderChanged(float val)
     {
+        if (!hasLoadedDefaultValues)
+        {
+            return;
+        }
         Settings.setPlayerPref(Settings.PLAYER_PREF_KEY_DURATION, val);
         DurationValueText.text = (int)val + " seconds";
     }
 
     public void onSharkSliderChanged(float val)
     {
+        if (!hasLoadedDefaultValues)
+        {
+            return;
+        }
         Settings.setPlayerPref(Settings.PLAYER_PREF_KEY_SHARK, val);
         SharkValueText.text = (int)val + " seconds";
     }
 
     public void onFishDensitySliderChanged(float val)
     {
+        if (!hasLoadedDefaultValues)
+        {
+            return;
+        }
         Settings.setPlayerPref(Settings.PLAYER_PREF_KEY_FISH_DENSITY, val);
         FishDensityValueText.text = (int)val + " fish per minute";
     }
 
     public void onFishEatPercentageSliderChanged(float val)
     {
+        if (!hasLoadedDefaultValues)
+        {
+            return;
+        }
         Settings.setPlayerPref(Settings.PLAYER_PREF_KEY_FISH_EAT_PERCENTAGE, val);
         FishEatFoodValueText.text = (int)val + "%";
     }
 
     public void onEnglishLanguageSelected(bool selected)
     {
+        if (!hasLoadedDefaultValues)
+        {
+            return;
+        }
         Debug.Log("onEnglishLanguageSelected " + selected);
         if (selected)
         {
@@ -227,6 +253,10 @@ public class CanvasStateManagerSettings : Singleton<CanvasStateManagerSettings>
 
     public void onPortugueseLanguageSelected(bool selected)
     {
+        if (!hasLoadedDefaultValues)
+        {
+            return;
+        }
         Debug.Log("onPortugueseLanguageSelected " + selected);
         if (selected)
         {
@@ -238,6 +268,10 @@ public class CanvasStateManagerSettings : Singleton<CanvasStateManagerSettings>
 
     public void onSharkOrderSharkFirstSelected(bool selected)
     {
+        if (!hasLoadedDefaultValues)
+        {
+            return;
+        }
         Debug.Log("onSharkOrderSharkFirstSelected " + selected);
         if (selected)
         {
@@ -247,6 +281,10 @@ public class CanvasStateManagerSettings : Singleton<CanvasStateManagerSettings>
 
     public void onSharkOrderDolphinFirstSelected(bool selected)
     {
+        if (!hasLoadedDefaultValues)
+        {
+            return;
+        }
         Debug.Log("onSharkOrderDolphinFirstSelected " + selected);
         if (selected)
         {
@@ -256,6 +294,10 @@ public class CanvasStateManagerSettings : Singleton<CanvasStateManagerSettings>
 
     public void onSharkOrderRandomSelected(bool selected)
     {
+        if (!hasLoadedDefaultValues)
+        {
+            return;
+        }
         Debug.Log("onSharkOrderRandomSelected " + selected);
         if (selected)
         {

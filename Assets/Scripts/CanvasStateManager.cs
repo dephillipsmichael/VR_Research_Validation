@@ -6,7 +6,7 @@ public class CanvasStateManager : Singleton<CanvasStateManager>
 {
     public int index = 0;
 
-    public int fishyTimeIdx = 5;
+    public int fishyTimeIdx = 3;
 
     private Vector3 startScale;
 
